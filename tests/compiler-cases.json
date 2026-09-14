@@ -1,0 +1,28 @@
+[
+  {
+    "fixture": "inspect-source.json",
+    "expectedExecutable": true,
+    "expectedCapability": "inspect",
+    "expectedRuleCount": {"min": 8, "max": 15},
+    "expectedDeterministicRuleMinimum": 4
+  },
+  {
+    "fixture": "mission-source.json",
+    "expectedExecutable": false,
+    "expectedErrorCodes": ["CAPABILITY_NOT_ALLOWED"]
+  },
+  {
+    "fixture": "diagnose-source.json",
+    "expectedExecutable": true,
+    "expectedCapability": "diagnose"
+  },
+  {
+    "fixture": "non-executable-source.json",
+    "expectedExecutable": false
+  },
+  {
+    "fixture": "high-risk-source.json",
+    "expectedExecutable": false,
+    "expectedRisk": "high"
+  }
+]

@@ -1,0 +1,102 @@
+openapi: 3.1.0
+info:
+  title: Zhihu Run API
+  version: 1.6.0
+servers:
+  - url: /api/v1
+paths:
+  /sessions:
+    get:
+      summary: List resumable sessions for the current anonymous device identity
+      parameters:
+        - in: query
+          name: status
+          schema: {type: string, enum: [created, engaged, completed, abandoned]}
+      responses:
+        '200': {description: OK}
+  /runs:
+    get:
+      summary: List/search published runs
+      parameters:
+        - in: query
+          name: q
+          schema: {type: string}
+        - in: query
+          name: category
+          schema: {type: string}
+        - in: query
+          name: sort
+          schema: {type: string, enum: [recent, completed, started]}
+        - in: query
+          name: page
+          schema: {type: integer, minimum: 1, default: 1}
+        - in: query
+          name: page_size
+          schema: {type: integer, minimum: 1, maximum: 50, default: 10}
+      responses:
+        '200': {description: OK}
+  /runs/{runId}:
+    get:
+      summary: Get a published run
+      parameters:
+        - in: path
+          name: runId
+          required: true
+          schema: {type: string}
+      responses:
+        '200': {description: OK}
+        '404': {description: Not found}
+  /runs/{runId}/sessions:
+    post:
+      summary: Create a run session; does not count as Started
+      parameters:
+        - in: path
+          name: runId
+          required: true
+          schema: {type: string}
+      responses:
+        '201': {description: Created}
+  /sessions/{sessionId}/progress:
+    patch:
+      summary: Upsert progress; first valid interaction counts Started
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema: {type: string}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [componentId, value]
+              properties:
+                componentId: {type: string}
+                value:
+                  type: string
+                  description: "normal|risk|unchecked|matched|not_matched|needs_review, or choice:<optionId> for a declared choice option"
+      responses:
+        '200': {description: Updated}
+  /sessions/{sessionId}/complete:
+    post:
+      summary: Verify completion and create result artifact
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema: {type: string}
+      responses:
+        '200': {description: Completed or already completed}
+        '409': {description: Completion rule not met}
+  /sessions/{sessionId}/result:
+    get:
+      summary: Get result artifact
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema: {type: string}
+      responses:
+        '200': {description: OK}

@@ -1,0 +1,8 @@
+{
+  "fixture": true,
+  "provider": "demo_fixture",
+  "completeness": "full",
+  "title": "合成样例：药物剂量调整",
+  "body": "这里包含关于自行调整处方药剂量的操作建议。",
+  "expected": "HIGH_RISK_REJECT"
+}

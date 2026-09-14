@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.3",
+  "title": "网络排查",
+  "description": "一步步定位问题范围",
+  "capability": "diagnose",
+  "estimatedMinutes": 3,
+  "sourceRef": {
+    "sourceId": "fixture_diagnose",
+    "contentHash": "5bf963d5978aca4ef6b08d08b6c3682a6a47ccc99b14466c312731d031eb56d2"
+  },
+  "program": {
+    "model": "diagnosis",
+    "primitives": ["observable_state", "source_backed_branch"],
+    "initialState": "scope_unknown",
+    "terminalState": "scope_located",
+    "states": [
+      {"id": "scope_unknown", "label": "问题范围待判断"},
+      {"id": "scope_located", "label": "问题范围已定位"}
+    ],
+    "transitions": [
+      {"from": "scope_unknown", "componentId": "choice_other", "when": "choice:yes", "to": "scope_located"},
+      {"from": "scope_unknown", "componentId": "choice_other", "when": "choice:no", "to": "scope_located"}
+    ]
+  },
+  "components": [
+    {
+      "id": "choice_other",
+      "type": "choice",
+      "required": true,
+      "title": "其他设备能联网吗？",
+      "options": [
+        {
+          "id": "yes",
+          "label": "其他设备也不能联网",
+          "nextId": "result_router"
+        },
+        {
+          "id": "no",
+          "label": "只有当前设备不能联网",
+          "nextId": "result_local"
+        }
+      ],
+      "source": {
+        "blockId": "fixture_block_diagnose_000",
+        "quote": "如果其他设备也无法联网，先检查路由器和外网状态；如果只有当前设备无法联网，则检查本机网络连接与地址配置",
+        "startOffset": 0,
+        "endOffset": 51,
+        "blockHash": "5bf963d5978aca4ef6b08d08b6c3682a6a47ccc99b14466c312731d031eb56d2"
+      }
+    },
+    {
+      "id": "result_router",
+      "type": "result",
+      "required": false,
+      "title": "检查路由器与外网"
+    },
+    {
+      "id": "result_local",
+      "type": "result",
+      "required": false,
+      "title": "检查本机网络配置"
+    }
+  ],
+  "completion": {
+    "type": "result_reached",
+    "targetId": null
+  },
+  "resultArtifact": {
+    "type": "diagnose_trace",
+    "fields": [
+      "reachedResultId",
+      "visitedNodeIds"
+    ]
+  }
+}

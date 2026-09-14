@@ -1,0 +1,61 @@
+{
+  "version": "1.13",
+  "freezeStatus": "APPROVED",
+  "productCategory": "Executable Knowledge",
+  "primaryUser": "people who want to execute a useful Zhihu knowledge source",
+  "heroGrammar": "data_driven",
+  "supportedGrammars": ["inspect", "mission", "diagnose", "practice"],
+  "p0Capabilities": ["inspect", "mission", "diagnose", "practice"],
+  "p0RunCount": 3,
+  "p0RunCountPolicy": "one_real_source_proof_run_plus_3_to_4_curated_simulated_knowledge_runs_for_hackathon_demo",
+  "canonicalThesis": "Official verifiable source scope -> AI-selected program primitives -> source-bound state machine -> deterministic execution trace -> source-bound result -> optional AI result interpretation",
+  "programabilityGate": {
+    "minimumDistinctPrimitives": 2,
+    "allowedPrimitives": ["observable_state", "source_backed_branch", "deterministic_evaluation", "feedback_loop", "repeatable_experiment", "material_artifact"],
+    "rejectLinearChecklist": true,
+    "everyRequiredActionTransitionsState": true
+  },
+  "programModels": ["scenario_simulator", "diagnosis", "micro_lab", "rule_tester", "gated_path", "dialogue_rehearsal", "parameter_sandbox"],
+  "sourceScopePolicy": {
+    "hero": ["official_full_source", "creator_analysis_owner_full_text", "hackathon_simulated_knowledge"],
+    "supporting": ["official_full_source", "creator_analysis_owner_full_text", "bounded_official_detail_excerpt", "hackathon_simulated_knowledge"],
+    "boundedExcerptDisclosureRequired": true,
+    "forbiddenInputs": ["search_excerpt", "list_description", "detail_introduction", "model_generated_source"]
+  },
+  "ruleOperators": ["required", "contains_number", "length_between", "value_between", "manual_evidence"],
+  "contentIntakePolicy": {
+    "automaticProvidersOnly": true,
+    "allowedProviders": ["official_hackathon_knowledge", "current_owner_creator_analysis"],
+    "forbidden": ["manual_text_paste", "file_upload", "arbitrary_url", "third_party_web_scraping"],
+    "runtimeInputsAreNotSourceImport": true
+  },
+  "privacy": {
+    "rawInputStorage": "minimal_and_source_dependent",
+    "serverAcceptedFields": ["componentId", "value"],
+    "serverMustNotReceive": ["unboundedRawInput", "excerpt"]
+  },
+  "mustPreserve": [
+    "Runtime state, path, usage and deterministic Result do not call or depend on an LLM",
+    "Optional AI result interpretation is opt-in, visibly separated and cannot alter deterministic Result, source anchors or usage",
+    "Search excerpts never enter the compiler",
+    "Creator-analysis text is only read for the current Access Secret owner and retains its Zhihu URL, author identity label and full-text hash",
+    "Started requires the first valid component interaction",
+    "Completed means the schema completion rule is satisfied, not a real-world outcome",
+    "Every key action requires a validated source anchor",
+    "Bounded excerpts disclose their exact character range and never claim whole-article coverage",
+    "One canonical Run per source with versioned schemas",
+    "Human preview is required before publish"
+    ,"A published Run has at least two source-bound program primitives and a declared state transition for every required action"
+  ],
+  "p0Exclusions": [
+    "public compile page",
+    "full admin UI",
+    "public ranking entry",
+    "model-controlled runtime path or unbounded runtime chat",
+    "social and gamification",
+    "productized generic LLM baseline",
+    "enterprise infrastructure"
+  ],
+  "p1Capabilities": ["optional_zhihu_oauth"],
+  "implementationGate": "PRODUCT-FREEZE.md must be APPROVED by the human product owner"
+}

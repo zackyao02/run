@@ -1,0 +1,230 @@
+
+> zhihu-run-app@1.0.0 dev
+> next dev --port 301
+
+   ▲ Next.js 15.5.9
+   - Local:        http://localhost:301
+   - Network:      http://192.168.47.1:301
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 5.1s
+ ○ Compiling /api/v1/ops/candidates/screen ...
+ ✓ Compiled /api/v1/ops/candidates/screen in 753ms (303 modules)
+ POST /api/v1/ops/candidates/screen 200 in 7476ms
+ POST /api/v1/ops/candidates/screen 200 in 39ms
+ POST /api/v1/ops/candidates/screen 200 in 40ms
+ POST /api/v1/ops/candidates/screen 200 in 37ms
+ POST /api/v1/ops/candidates/screen 200 in 31ms
+ ✓ Compiled /api/v1/ops/compile in 415ms (308 modules)
+ POST /api/v1/ops/compile 400 in 15789ms
+ POST /api/v1/ops/compile 400 in 17920ms
+ ✓ Compiled /api/v1/ops/drafts in 322ms (301 modules)
+ GET /api/v1/ops/drafts 200 in 441ms
+ ✓ Compiled /api/v1/ops/candidates/screen in 60ms (108 modules)
+ POST /api/v1/ops/candidates/screen 200 in 114ms
+ ✓ Compiled /api/v1/ops/compile in 137ms (113 modules)
+ POST /api/v1/ops/compile 400 in 17383ms
+ ✓ Compiled in 36ms
+ ✓ Compiled /api/v1/ops/compile in 146ms (111 modules)
+ POST /api/v1/ops/compile 201 in 14122ms
+ ✓ Compiled /api/v1/ops/drafts in 197ms (106 modules)
+ GET /api/v1/ops/drafts 200 in 250ms
+ ✓ Compiled /api/v1/ops/candidates/screen in 160ms (108 modules)
+ POST /api/v1/ops/candidates/screen 200 in 583ms
+ ✓ Compiled /api/v1/ops/compile in 74ms (113 modules)
+ POST /api/v1/ops/compile 201 in 11769ms
+ ✓ Compiled /api/v1/ops/drafts in 61ms (106 modules)
+ GET /api/v1/ops/drafts 200 in 162ms
+ ○ Compiling /dev/ops ...
+ ✓ Compiled /dev/ops in 913ms (561 modules)
+ GET /dev/ops 200 in 1326ms
+ GET /api/v1/ops/drafts 200 in 137ms
+ ○ Compiling /api/v1/dev/provider/knowledge ...
+ ✓ Compiled /api/v1/dev/provider/knowledge in 706ms (564 modules)
+ GET /api/v1/dev/provider/knowledge 200 in 1436ms
+ ○ Compiling /api/v1/ops/drafts/[draftId]/publish ...
+ ✓ Compiled /api/v1/ops/drafts/[draftId]/publish in 718ms (568 modules)
+ POST /api/v1/ops/drafts/8fa1599a-c45b-4c0d-a423-dbba1f4913b1/publish 409 in 6344ms
+ POST /api/v1/ops/drafts/8fa1599a-c45b-4c0d-a423-dbba1f4913b1/publish 409 in 48ms
+ POST /api/v1/ops/drafts/8fa1599a-c45b-4c0d-a423-dbba1f4913b1/publish 409 in 32ms
+ ✓ Compiled /api/v1/ops/candidates/screen in 199ms (354 modules)
+ POST /api/v1/ops/candidates/screen 200 in 258ms
+ ✓ Compiled /api/v1/ops/compile in 193ms (357 modules)
+ POST /api/v1/ops/compile 201 in 11998ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 48ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 33ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 42ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 30ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 30ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 28ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 43ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 30ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 39ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 30ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 32ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 38ms
+ POST /api/v1/ops/drafts/83cf92f6-d1e2-406b-837c-4765de847cc3/publish 409 in 30ms
+ ✓ Compiled in 301ms (218 modules)
+ ✓ Compiled in 226ms (321 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\cache\webpack\server-development\16.pack.gz_' -> 'C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\cache\webpack\server-development\16.pack.gz'
+ ✓ Compiled in 683ms (539 modules)
+ ⨯ TypeError: __webpack_modules__[moduleId] is not a function
+    at __webpack_exec__ (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\app\dev\ops\page.js:279:39)
+    at <unknown> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\app\dev\ops\page.js:280:104)
+    at <unknown> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\app\dev\ops\page.js:280:47)
+    at Object.<anonymous> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\app\dev\ops\page.js:283:3) {
+  page: '/dev/ops'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1309ms (879 modules)
+ GET /dev/ops 500 in 3744ms
+ GET /dev/ops 200 in 175ms
+ GET /dev/ops 200 in 66ms
+ GET /dev/ops 200 in 62ms
+ GET /dev/ops 200 in 224ms
+ ✓ Compiled /api/v1/ops/drafts in 369ms (530 modules)
+ ✓ Compiled (537 modules)
+TypeError: (0 , _src_domain_operator_store__WEBPACK_IMPORTED_MODULE_2__.listDrafts)(...).map is not a function
+    at GET (app\api\v1\ops\drafts\route.ts:7:50)
+  5 | export function GET(request: Request) {
+  6 |   if (!isOperatorRequest(request)) return NextResponse.json({ error: "OPERATOR_AUTH_REQUIRED" }, { status: 401 });
+> 7 |   return NextResponse.json({ items: listDrafts().map((draft) => ({ id: draft.id, createdAt: draft.createdAt, source: { id: draft.source.id, title: draft.source.title, completeness: draft.source.completeness, coverage: draft.source.coverage }, run: draft.run })) });
+    |                                                  ^
+  8 | }
+  9 |
+ GET /api/v1/ops/drafts 500 in 1937ms
+ GET /dev/ops 200 in 1513ms
+ GET /api/v1/dev/provider/knowledge 200 in 2534ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1125ms (912 modules)
+ GET /dev/ops 404 in 1256ms
+ GET /dev/ops 200 in 72ms
+ GET /dev/ops 200 in 240ms
+TypeError: (0 , _src_domain_operator_store__WEBPACK_IMPORTED_MODULE_2__.listDrafts)(...).map is not a function
+    at GET (app\api\v1\ops\drafts\route.ts:7:50)
+  5 | export function GET(request: Request) {
+  6 |   if (!isOperatorRequest(request)) return NextResponse.json({ error: "OPERATOR_AUTH_REQUIRED" }, { status: 401 });
+> 7 |   return NextResponse.json({ items: listDrafts().map((draft) => ({ id: draft.id, createdAt: draft.createdAt, source: { id: draft.source.id, title: draft.source.title, completeness: draft.source.completeness, coverage: draft.source.coverage }, run: draft.run })) });
+    |                                                  ^
+  8 | }
+  9 |
+ GET /api/v1/ops/drafts 500 in 128ms
+ GET /api/v1/dev/provider/knowledge 200 in 674ms
+ ✓ Compiled in 179ms (417 modules)
+ GET /dev/ops 200 in 217ms
+ ✓ Compiled /_not-found in 922ms (791 modules)
+ GET /dev/ops 404 in 1034ms
+ GET /dev/ops 200 in 78ms
+ GET /dev/ops 200 in 187ms
+ ✓ Compiled /api/v1/ops/drafts in 197ms (439 modules)
+ ✓ Compiled (446 modules)
+ GET /api/v1/ops/drafts 200 in 645ms
+ GET /dev/ops 200 in 274ms
+ GET /api/v1/dev/provider/knowledge 200 in 1259ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\cache\webpack\client-development\15.pack.gz_' -> 'C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\cache\webpack\client-development\15.pack.gz'
+ ⨯ ./src/components/operator-console.tsx
+Error: 
+
+Caused by:
+    0: Failed to read source code from C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\src\components\operator-console.tsx
+    1: 系统找不到指定的文件。 (os error 2)
+
+Import trace for requested module:
+./src/components/operator-console.tsx
+./app/dev/ops/page.tsx
+ ✓ Compiled in 503ms (786 modules)
+ ✓ Compiled in 10.6s (800 modules)
+ GET /dev/ops 200 in 220ms
+ ✓ Compiled /api/v1/runs in 465ms (812 modules)
+ GET /api/v1/runs 200 in 617ms
+ ✓ Compiled /api/v1/dev/fixtures/[runId]/sessions in 365ms (814 modules)
+ POST /api/v1/dev/fixtures/fixture_mission/sessions 201 in 1963ms
+ ✓ Compiled /api/v1/sessions/[sessionId]/progress in 417ms (816 modules)
+ PATCH /api/v1/sessions/3e0a4f6d-b961-4dd2-9bec-527a43d7d702/progress 200 in 1808ms
+ PATCH /api/v1/sessions/3e0a4f6d-b961-4dd2-9bec-527a43d7d702/progress 200 in 50ms
+ PATCH /api/v1/sessions/3e0a4f6d-b961-4dd2-9bec-527a43d7d702/progress 200 in 34ms
+ ✓ Compiled /api/v1/sessions/[sessionId]/complete in 379ms (818 modules)
+ POST /api/v1/sessions/3e0a4f6d-b961-4dd2-9bec-527a43d7d702/complete 200 in 1683ms
+ ✓ Compiled in 195ms (417 modules)
+ ✓ Compiled /api/v1/ops/drafts in 210ms (442 modules)
+ GET /api/v1/ops/drafts 200 in 353ms
+ ⨯ Error: Cannot find module './586.js'
+Require stack:
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\webpack-runtime.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\app\api\v1\ops\drafts\route.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\require.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\load-components.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\utils.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\swc\options.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\swc\index.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\config.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\next.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\app\dev\ops\page.js:2:13818)
+    at Object.<anonymous> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\app\dev\ops\page.js:2:13872) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/dev/ops'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 774ms (879 modules)
+ ⨯ Error: Cannot find module './611.js'
+Require stack:
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\webpack-runtime.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\pages\_document.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\require.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\load-components.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\utils.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\swc\options.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\swc\index.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\config.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\next.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\pages\_document.js:1:325)
+    at Object.<anonymous> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\pages\_document.js:1:371) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ GET /dev/ops 500 in 2009ms
+ ⨯ Error: Cannot find module './586.js'
+Require stack:
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\webpack-runtime.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\pages\_document.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\require.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\load-components.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\utils.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\swc\options.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\swc\index.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\config.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\next.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\app\dev\ops\page.js:2:13818)
+    at Object.<anonymous> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\app\dev\ops\page.js:2:13872) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/dev/ops'
+}
+ ⨯ Error: Cannot find module './611.js'
+Require stack:
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\webpack-runtime.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\pages\_document.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\require.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\load-components.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\utils.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\swc\options.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\swc\index.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\config.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\next.js
+- C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\pages\_document.js:1:325)
+    at Object.<anonymous> (C:\Users\10735\Documents\知乎\zhihu_run_engineering_package_v1.4\.next\server\pages\_document.js:1:371) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ GET /dev/ops 500 in 126ms
+[?25h

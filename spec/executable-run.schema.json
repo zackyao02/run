@@ -1,0 +1,355 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/spec/executable-run.schema.json",
+  "title": "ExecutableRun",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "title",
+    "description",
+    "capability",
+    "sourceRef",
+    "components",
+    "completion",
+    "resultArtifact"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.3"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "capability": {
+      "enum": [
+        "inspect",
+        "mission",
+        "diagnose",
+        "practice",
+        "configure",
+        "compare"
+      ]
+    },
+    "category": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 40
+    },
+    "estimatedMinutes": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 240
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["started", "completed"],
+      "properties": {
+        "started": {"type": "integer", "minimum": 0},
+        "completed": {"type": "integer", "minimum": 0}
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "label"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,80}$"},
+          "type": {"enum": ["textarea", "text", "number"]},
+          "label": {"type": "string", "minLength": 1, "maxLength": 120},
+          "description": {"type": "string", "maxLength": 240},
+          "required": {"type": "boolean"},
+          "maxLength": {"type": "integer", "minimum": 1, "maximum": 5000},
+          "placeholder": {"type": "string", "maxLength": 240}
+        }
+      }
+    },
+    "program": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "primitives", "initialState", "terminalState", "states", "transitions"],
+      "properties": {
+        "model": {"enum": ["verification", "gated_path", "diagnosis", "scenario_simulator", "micro_lab", "rule_tester", "dialogue_rehearsal", "parameter_sandbox", "practice_cycle"]},
+        "primitives": {
+          "type": "array", "minItems": 2, "maxItems": 6, "uniqueItems": true,
+          "items": {"enum": ["observable_state", "source_backed_branch", "deterministic_evaluation", "feedback_loop", "repeatable_experiment", "material_artifact"]}
+        },
+        "initialState": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,80}$"},
+        "terminalState": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,80}$"},
+        "states": {
+          "type": "array", "minItems": 2, "maxItems": 8,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["id", "label"],
+            "properties": {"id": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,80}$"}, "label": {"type": "string", "minLength": 1, "maxLength": 80}, "description": {"type": "string", "maxLength": 160}}
+          }
+        },
+        "transitions": {
+          "type": "array", "minItems": 1, "maxItems": 20,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["from", "componentId", "when", "to"],
+            "properties": {"from": {"type": "string"}, "componentId": {"type": "string"}, "when": {"type": "string", "pattern": "^(completed|choice:[A-Za-z0-9_-]{1,80})$"}, "to": {"type": "string"}, "effects": {"type": "array", "maxItems": 6, "items": {"type": "object", "additionalProperties": false, "required": ["variableId", "delta"], "properties": {"variableId": {"type": "string"}, "delta": {"type": "number", "minimum": -100, "maximum": 100}}}}}
+          }
+        }
+        ,"variables": {"type": "array", "maxItems": 6, "items": {"type": "object", "additionalProperties": false, "required": ["id", "label", "initialValue", "min", "max"], "properties": {"id": {"type": "string"}, "label": {"type": "string", "maxLength": 40}, "initialValue": {"type": "number"}, "min": {"type": "number"}, "max": {"type": "number"}, "unit": {"type": "string", "maxLength": 12}, "valueLabels": {"type": "object", "additionalProperties": {"type": "string", "maxLength": 80}}}}}
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "required": [
+        "sourceId",
+        "contentHash"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contentHash": {
+          "type": "string",
+          "minLength": 16
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,80}$"
+          },
+          "type": {
+            "enum": [
+              "intro",
+              "check",
+              "task",
+              "choice",
+              "input",
+              "warning",
+              "timer",
+              "result"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "options": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "label",
+                "nextId"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{1,80}$"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "nextId": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{1,80}$"
+                },
+                "value": {"type": "number", "minimum": -100000, "maximum": 100000},
+                "response": {"type": "string", "maxLength": 300}
+              }
+            }
+          },
+              "source": {
+            "type": "object",
+            "required": [
+              "blockId",
+              "quote",
+              "startOffset",
+              "endOffset",
+              "blockHash"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "blockId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "quote": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 400
+              },
+              "startOffset": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "endOffset": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "blockHash": {
+                "type": "string",
+                "minLength": 16
+                }
+              }
+              ,"evaluation": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["inputId", "operator"],
+                "properties": {
+                  "inputId": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,80}$"},
+                  "operator": {"enum": ["required", "contains_number", "length_between", "value_between", "manual_evidence"]},
+                  "params": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "min": {"type": "number"},
+                      "max": {"type": "number"}
+                    }
+                  }
+                }
+              }
+              ,"durationSeconds": {"type": "integer", "minimum": 10, "maximum": 3600}
+              ,"speaker": {"type": "string", "maxLength": 40}
+              ,"utterance": {"type": "string", "maxLength": 300}
+              ,"nextId": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,80}$"}
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "check",
+                    "task",
+                    "choice",
+                    "warning",
+                    "timer"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "required": [
+                "source"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {"type": {"const": "check"}},
+              "required": ["type"]
+            },
+            "then": {"required": ["evaluation"]}
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "choice"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "required": [
+                "options"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "completion": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "all_required_completed",
+            "result_reached",
+            "stage_completed"
+          ]
+        },
+        "targetId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "resultArtifact": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "inspect_summary",
+            "mission_snapshot",
+            "diagnose_trace",
+            "generic_summary"
+          ]
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20
+        }
+      }
+    }
+  }
+}

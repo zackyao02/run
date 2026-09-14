@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/spec/programability-result.schema.json",
+  "title": "ProgramabilityResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["approved", "capability", "model", "primitives", "reason"],
+  "properties": {
+    "approved": {"type": "boolean"},
+    "capability": {"enum": ["inspect", "mission", "diagnose", "practice", "none"]},
+    "model": {"enum": ["verification", "gated_path", "diagnosis", "scenario_simulator", "micro_lab", "rule_tester", "dialogue_rehearsal", "parameter_sandbox", "practice_cycle", "none"]},
+    "primitives": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"enum": ["observable_state", "source_backed_branch", "deterministic_evaluation", "feedback_loop", "repeatable_experiment", "material_artifact"]},
+      "maxItems": 6
+    },
+    "reason": {"type": "string", "minLength": 1, "maxLength": 800}
+  }
+}

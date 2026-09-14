@@ -1,0 +1,99 @@
+import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
+
+export const OAUTH_STATE_COOKIE = "zhihu_oauth_state";
+export const OAUTH_SESSION_COOKIE = "zhihu_oauth_session";
+const STATE_TTL_MS = 10 * 60 * 1000;
+
+export interface ZhihuUserProfile {
+  id?: string;
+  urlToken?: string;
+  name?: string;
+  avatarUrl?: string;
+  headline?: string;
+}
+
+interface PendingState { createdAt: number; }
+interface OAuthSession { accessToken: string; expiresAt: number; profile: ZhihuUserProfile | null; }
+
+const pendingStates = new Map<string, PendingState>();
+const sessions = new Map<string, OAuthSession>();
+
+function prune() {
+  const now = Date.now();
+  for (const [state, value] of pendingStates) if (now - value.createdAt > STATE_TTL_MS) pendingStates.delete(state);
+  for (const [id, session] of sessions) if (session.expiresAt <= now) sessions.delete(id);
+}
+
+function isLocalHost(hostname: string) {
+  const host = hostname.toLowerCase();
+  return host === "localhost" || host === "127.0.0.1" || host === "::1" || host.startsWith("192.168.") || host.startsWith("10.");
+}
+
+export function getOAuthConfig() {
+  const appId = process.env.ZHIHU_OAUTH_APP_ID?.trim();
+  const appKey = process.env.ZHIHU_OAUTH_APP_KEY?.trim();
+  const redirectUri = process.env.ZHIHU_OAUTH_REDIRECT_URI?.trim();
+  return { appId, appKey, redirectUri };
+}
+
+export function assertPublicRedirectUri(value: string | undefined) {
+  if (!value) throw new Error("OAUTH_REDIRECT_URI_NOT_CONFIGURED");
+  const parsed = new URL(value);
+  if (parsed.protocol !== "https:" || isLocalHost(parsed.hostname) || !parsed.pathname.endsWith("/auth/callback")) {
+    throw new Error("OAUTH_REDIRECT_URI_MUST_BE_PUBLIC_HTTPS");
+  }
+  return parsed.toString();
+}
+
+export function createPendingState() {
+  prune();
+  const state = randomBytes(32).toString("hex");
+  pendingStates.set(state, { createdAt: Date.now() });
+  return state;
+}
+
+export function consumePendingState(state: string, expectedCookie: string | undefined) {
+  prune();
+  if (!state || !expectedCookie) return false;
+  const a = Buffer.from(state);
+  const b = Buffer.from(expectedCookie);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return false;
+  const pending = pendingStates.get(state);
+  if (!pending || Date.now() - pending.createdAt > STATE_TTL_MS) return false;
+  pendingStates.delete(state);
+  return true;
+}
+
+export function createSession(accessToken: string, expiresIn: number, profile: ZhihuUserProfile | null) {
+  prune();
+  const id = randomBytes(32).toString("hex");
+  const expiresAt = Date.now() + Math.max(60, Number.isFinite(expiresIn) ? expiresIn : 3600) * 1000;
+  sessions.set(id, { accessToken, expiresAt, profile });
+  return { id, expiresAt };
+}
+
+export function getSession(id: string | undefined) {
+  if (!id) return undefined;
+  prune();
+  return sessions.get(id);
+}
+
+export function deleteSession(id: string | undefined) {
+  if (id) sessions.delete(id);
+}
+
+export function safeProfile(payload: unknown): ZhihuUserProfile | null {
+  if (!payload || typeof payload !== "object") return null;
+  const value = payload as Record<string, unknown>;
+  const profile: ZhihuUserProfile = {};
+  if (typeof value.id === "string" || typeof value.id === "number") profile.id = String(value.id);
+  if (typeof value.url_token === "string") profile.urlToken = value.url_token;
+  if (typeof value.name === "string") profile.name = value.name;
+  if (typeof value.avatar_url === "string") profile.avatarUrl = value.avatar_url;
+  if (typeof value.headline === "string") profile.headline = value.headline;
+  return Object.keys(profile).length ? profile : null;
+}
+
+export function sessionFingerprint(id: string) {
+  return createHash("sha256").update(id).digest("hex").slice(0, 12);
+}

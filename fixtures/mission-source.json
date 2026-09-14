@@ -1,0 +1,8 @@
+{
+  "fixture": true,
+  "provider": "demo_fixture",
+  "completeness": "full",
+  "title": "合成样例：48小时项目推进",
+  "body": "前期先确定核心场景和演示路径，再完成最小可用版本。最后阶段停止新增功能，集中处理部署、演示和稳定性。",
+  "note": "仅开发测试。"
+}

@@ -1,0 +1,2 @@
+ALTER TABLE app_run_usage
+  ADD COLUMN IF NOT EXISTS favorites INTEGER NOT NULL DEFAULT 0 CHECK (favorites >= 0);

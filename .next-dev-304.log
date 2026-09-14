@@ -1,0 +1,120 @@
+
+> zhihu-run-app@1.0.0 dev
+> next dev -p 304
+
+   ▲ Next.js 15.5.9
+   - Local:        http://localhost:304
+   - Network:      http://192.168.47.1:304
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 4.7s
+ ○ Compiling /api/v1/ops/precompile-official ...
+ ✓ Compiled /api/v1/ops/precompile-official in 830ms (308 modules)
+ POST /api/v1/ops/precompile-official 201 in 2099ms
+ ✓ Compiled /api/v1/ops/drafts/[draftId]/publish in 387ms (311 modules)
+ POST /api/v1/ops/drafts/official-cache-1251918148732559360/publish 200 in 1725ms
+ POST /api/v1/ops/drafts/official-cache-1307332455322529792/publish 200 in 47ms
+ POST /api/v1/ops/drafts/official-cache-1509654546602856448/publish 200 in 35ms
+ POST /api/v1/ops/drafts/official-cache-1393937473601368064/publish 200 in 38ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1000ms (626 modules)
+ GET / 200 in 1429ms
+ ○ Compiling /runs/[runId] ...
+ ✓ Compiled /runs/[runId] in 534ms (659 modules)
+ GET /runs/1251918148732559360 200 in 2091ms
+ GET / 200 in 204ms
+ GET /runs/1251918148732559360 200 in 76ms
+ ○ Compiling /api/v1/runs/[runId] ...
+ ✓ Compiled /api/v1/runs/[runId] in 913ms (653 modules)
+ GET /api/v1/runs/1251918148732559360 200 in 2340ms
+ GET /api/v1/sessions/9b2f58b1-f187-4bca-82cb-540be9f91a12 404 in 2358ms
+ GET /api/v1/runs/1251918148732559360 200 in 62ms
+ ○ Compiling /api/v1/runs/[runId]/sessions ...
+ ✓ Compiled /api/v1/runs/[runId]/sessions in 564ms (655 modules)
+ GET /api/v1/sessions/9b2f58b1-f187-4bca-82cb-540be9f91a12 404 in 691ms
+ POST /api/v1/runs/1251918148732559360/sessions 201 in 2047ms
+ POST /api/v1/runs/1251918148732559360/sessions 201 in 1339ms
+ ○ Compiling /demo/[runId] ...
+ ✓ Compiled /demo/[runId] in 756ms (646 modules)
+ GET /demo/demo_rental_audit?compile=1 200 in 2140ms
+ GET /demo/demo_rental_audit 200 in 68ms
+ GET /demo/demo_meeting_diagnosis?compile=1 200 in 78ms
+ GET /demo/demo_meeting_diagnosis 200 in 62ms
+ ○ Compiling /api/v1/demo/[runId]/ai-result ...
+ ✓ Compiled /api/v1/demo/[runId]/ai-result in 536ms (667 modules)
+ POST /api/v1/demo/demo_meeting_diagnosis/ai-result 200 in 15837ms
+ GET /runs/1307332455322529792 200 in 137ms
+ ✓ Compiled /api/v1/runs/[runId] in 194ms (429 modules)
+ ✓ Compiled (431 modules)
+ GET /api/v1/runs/1307332455322529792 200 in 538ms
+ GET /api/v1/sessions/e35251f6-e16a-4793-a414-af8536f62803 404 in 573ms
+ ✓ Compiled /api/v1/runs/[runId]/sessions in 277ms (433 modules)
+ GET /api/v1/sessions/e35251f6-e16a-4793-a414-af8536f62803 404 in 613ms
+ GET /api/v1/runs/1307332455322529792 200 in 619ms
+ POST /api/v1/runs/1307332455322529792/sessions 201 in 663ms
+ POST /api/v1/runs/1307332455322529792/sessions 201 in 75ms
+ ✓ Compiled /api/v1/sessions/[sessionId]/progress in 452ms (675 modules)
+ PATCH /api/v1/sessions/4c75e99c-3e1f-4fb7-af92-9bc2078d4e2a/progress 200 in 1851ms
+ PATCH /api/v1/sessions/4c75e99c-3e1f-4fb7-af92-9bc2078d4e2a/progress 200 in 50ms
+ PATCH /api/v1/sessions/4c75e99c-3e1f-4fb7-af92-9bc2078d4e2a/progress 200 in 51ms
+ PATCH /api/v1/sessions/4c75e99c-3e1f-4fb7-af92-9bc2078d4e2a/progress 200 in 36ms
+ PATCH /api/v1/sessions/4c75e99c-3e1f-4fb7-af92-9bc2078d4e2a/progress 200 in 44ms
+ PATCH /api/v1/sessions/4c75e99c-3e1f-4fb7-af92-9bc2078d4e2a/progress 200 in 35ms
+ PATCH /api/v1/sessions/4c75e99c-3e1f-4fb7-af92-9bc2078d4e2a/progress 200 in 48ms
+ PATCH /api/v1/sessions/4c75e99c-3e1f-4fb7-af92-9bc2078d4e2a/progress 200 in 47ms
+ ○ Compiling /api/v1/sessions/[sessionId]/complete ...
+ ✓ Compiled /api/v1/sessions/[sessionId]/complete in 598ms (673 modules)
+ POST /api/v1/sessions/4c75e99c-3e1f-4fb7-af92-9bc2078d4e2a/complete 200 in 1957ms
+ GET /api/v1/runs/1307332455322529792 200 in 60ms
+ ✓ Compiled /api/v1/sessions/[sessionId]/ai-result in 508ms (676 modules)
+ POST /api/v1/sessions/4c75e99c-3e1f-4fb7-af92-9bc2078d4e2a/ai-result 200 in 18389ms
+ GET /api/v1/runs/1251918148732559360 200 in 56ms
+ GET /api/v1/runs/1307332455322529792 200 in 36ms
+ GET /api/v1/runs/1509654546602856448 200 in 37ms
+ GET /api/v1/runs/1393937473601368064 200 in 36ms
+ GET /api/v1/runs/1251918148732559360 200 in 51ms
+ GET /api/v1/runs/1307332455322529792 200 in 39ms
+ GET /api/v1/runs/1509654546602856448 200 in 38ms
+ GET /api/v1/runs/1393937473601368064 200 in 36ms
+ ✓ Compiled in 683ms (641 modules)
+ GET / 200 in 299ms
+ ✓ Compiled in 333ms (403 modules)
+ GET / 200 in 209ms
+ ✓ Compiled in 466ms (646 modules)
+ GET / 200 in 183ms
+ ✓ Compiled in 351ms (408 modules)
+ GET / 200 in 175ms
+ ✓ Compiled in 636ms (648 modules)
+ ○ Compiling /knowledge/[runId] ...
+ ✓ Compiled /knowledge/[runId] in 733ms (653 modules)
+ GET /knowledge/1307332455322529792 200 in 2407ms
+ GET /knowledge/1307332455322529792 200 in 95ms
+ GET /knowledge/1307332455322529792 200 in 70ms
+ GET / 200 in 102ms
+ ○ Compiling /api/v1/ops/precompile-official ...
+ ✓ Compiled /api/v1/ops/precompile-official in 545ms (437 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 841ms (1018 modules)
+ POST /api/v1/ops/precompile-official 201 in 1902ms
+ ✓ Compiled in 210ms (393 modules)
+ GET / 500 in 1813ms
+ ✓ Compiled /api/v1/ops/drafts/[draftId]/publish in 552ms (625 modules)
+ ✓ Compiled (627 modules)
+ POST /api/v1/ops/drafts/official-cache-1509654546602856448/publish 200 in 571ms
+ POST /api/v1/ops/drafts/official-cache-1393937473601368064/publish 200 in 97ms
+ POST /api/v1/ops/drafts/official-cache-1251918148732559360/publish 200 in 68ms
+ GET / 500 in 892ms
+ POST /api/v1/ops/drafts/official-cache-1307332455322529792/publish 200 in 91ms
+ GET / 500 in 317ms
+ GET / 500 in 423ms
+ GET / 500 in 314ms
+ ✓ Compiled /api/v1/runs/[runId] in 392ms (629 modules)
+ GET /api/v1/runs/1251918148732559360 200 in 551ms
+ GET /api/v1/runs/1307332455322529792 200 in 39ms
+ GET /api/v1/runs/1509654546602856448 200 in 38ms
+ GET /api/v1/runs/1393937473601368064 200 in 43ms
+ GET / 500 in 460ms
+ GET /runs/1251918148732559360 500 in 307ms
+ GET / 500 in 287ms
+[?25h

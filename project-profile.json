@@ -1,0 +1,28 @@
+{
+  "project": "知乎 Run｜用一下",
+  "version": "1.4",
+  "track": "知识炼金场",
+  "productCategory": "Executable Knowledge",
+  "freezeStatus": "APPROVED",
+  "officialSkillVersion": "0.7.2-beta.20260911131715",
+  "hero": {
+    "user": "求职或初入职场的学生与新人",
+    "grammar": "inspect",
+    "defaultTopic": "简历自检",
+    "sourceSelection": "real knowledge pool validation required"
+  },
+  "p0RuntimeLlm": false,
+  "canonicalRunPerSource": true,
+  "runCountGoal": {"p0": 3, "hero": 1, "supporting": 2},
+  "usageSemantics": {
+    "started": "first valid interaction",
+    "completed": "completion rule satisfied",
+    "outcomeConfirmed": "not supported"
+  },
+  "mustProve": [
+    "AI compile-time judgment and grounding",
+    "Source-bound actions",
+    "Deterministic runtime with LLM disconnected",
+    "Recoverable session and faithful result artifact"
+  ]
+}

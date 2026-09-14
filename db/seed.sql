@@ -1,0 +1,3 @@
+-- V1.2 does not seed fake Zhihu content.
+-- Use fixtures/* only in development.
+-- Official Hero sources must be selected after the Knowledge Pool Go/No-Go Gate.

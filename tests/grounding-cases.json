@@ -1,0 +1,26 @@
+[
+  {
+    "name": "valid exact quote",
+    "expected": true
+  },
+  {
+    "name": "valid normalized punctuation",
+    "expected": true
+  },
+  {
+    "name": "wrong block id",
+    "expected": false
+  },
+  {
+    "name": "hash mismatch",
+    "expected": false
+  },
+  {
+    "name": "out of range offsets",
+    "expected": false
+  },
+  {
+    "name": "invented quote",
+    "expected": false
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "fixture": true,
+  "provider": "demo_fixture",
+  "completeness": "full",
+  "title": "合成样例：为什么夜晚让人平静",
+  "body": "夜晚常常让人感到安静，不同的人会联想到不同的生活片段。这是一种主观体验。",
+  "expected": "NOT_EXECUTABLE"
+}
