@@ -828,3 +828,137 @@ h1 { margin: 12px 0 16px; font-size: clamp(36px, 6vw, 68px); line-height: .98; l
   .solution-radar::after { right:16px; bottom:12px; width:92px; height:92px; }
   .program-hero-side .run-usage { justify-content:center; }
 }
+
+/* Responsive layout pass: keep the same visual language while giving narrow
+   screens their own spacing, reading order and touch targets. */
+html { overflow-x: hidden; }
+img, svg, video { max-width: 100%; }
+
+@media (max-width: 760px) {
+  .topbar { min-height: 64px; height: auto; padding: 13px 18px; gap: 12px; }
+  .brand { font-size: 19px; white-space: nowrap; }
+  .topbar .nav-note { display: none; }
+  .home-nav { gap: 11px; flex-wrap: wrap; justify-content: flex-end; }
+  .home-nav a { font-size: 12px; }
+  .home-nav a:first-child { display: none; }
+
+  .container, .discovery-container, .product-container, .workbench-container {
+    width: 100%; max-width: none; padding-left: 18px; padding-right: 18px;
+  }
+  h1 { font-size: clamp(34px, 12vw, 58px); line-height: 1.02; }
+  .lede { font-size: 16px; line-height: 1.65; }
+
+  /* Homepage / knowledge discovery */
+  .discovery-container { padding-top: 18px; padding-bottom: 58px; }
+  .discovery-hero { grid-template-columns: 1fr; gap: 24px; min-height: 0; padding: 28px 0 34px; }
+  .discovery-hero h1 { font-size: clamp(40px, 13vw, 66px); }
+  .hero-orbit { justify-self: center; width: min(76vw, 285px); height: min(76vw, 285px); }
+  .run-search { padding: 15px; border-radius: 17px; }
+  .run-search div { flex-direction: column; gap: 9px; }
+  .run-search input, .run-search .primary { width: 100%; min-height: 48px; }
+  .published-section, .demo-published-section { margin-top: 58px; }
+  .official-published-section { margin-top: 66px; padding-top: 46px; }
+  .section-title, .principles-heading { grid-template-columns: 1fr; gap: 12px; align-items: start; margin-bottom: 20px; }
+  .section-title h2, .principles-heading h2 { font-size: clamp(32px, 10vw, 46px); }
+  .section-title p, .principles-heading p { font-size: 14px; }
+  .published-grid, .demo-knowledge-grid { grid-template-columns: 1fr; gap: 13px; }
+  .published-card, .published-grid .published-card, .published-unified-card, .demo-knowledge-card { min-height: 0; padding: 21px 19px; border-radius: 21px; }
+  .published-card { gap: 18px; }
+  .published-card h3, .published-grid h3, .demo-knowledge-card h3 { max-width: calc(100% - 35px); font-size: 23px; line-height: 1.25; }
+  .run-promise { margin: 14px 0; font-size: 14px; line-height: 1.65; }
+  .demo-card-meta { gap: 7px; }
+  .run-stats { gap: 6px; margin-top: 13px; }
+  .run-stats span, .favorite-button { min-height: 32px; padding: 6px 9px; font-size: 11px; }
+  .published-card-action, .published-unified-card .published-card-action, .demo-card-actions { width: 100%; align-items: stretch; flex-direction: column; gap: 10px; }
+  .published-card-action .primary, .published-unified-card .published-card-action .primary, .demo-card-actions .primary { width: 100%; margin-left: 0; }
+  .published-card-action .secondary-link, .demo-card-actions .secondary-link { align-self: flex-start; min-height: 34px; display: inline-flex; align-items: center; }
+  .demo-card-index, .published-unified-card .demo-card-index { top: 15px; right: 17px; font-size: 25px; }
+  .discovery-principles { margin-top: 64px; padding: 23px 17px; border-radius: 23px; }
+  .principles-flow { grid-template-columns: 1fr; gap: 11px; }
+  .principle-card { min-height: 205px; padding: 18px; border-radius: 18px; }
+  .principle-copy strong { font-size: 18px; }
+  .principles-footer { gap: 8px; line-height: 1.5; }
+
+  /* Shared run headers, cards and evidence drawers */
+  .demo-topbar, .sim-source-top { align-items: flex-start; flex-wrap: wrap; }
+  .demo-topbar .source-nav-link, .sim-source-top .source-nav-link { margin-left: auto; }
+  .demo-run-container, .game-runner { padding-top: 24px; }
+  .demo-run-hero, .run-console { grid-template-columns: 1fr; gap: 20px; padding-top: 26px; }
+  .demo-run-hero .console-copy h1, .run-console .console-copy h1 { font-size: clamp(37px, 11vw, 60px); }
+  .program-hero-side { width: 100%; min-width: 0; justify-items: center; align-self: auto; }
+  .program-run-orb { width: 164px; height: 164px; border-radius: 26px; }
+  .program-run-orb .demo-hero-mark { width: 126px; height: 126px; }
+  .program-run-orb .kanshan-run-mascot { width: 76px; height: 76px; right: -5px; bottom: -18px; }
+  .program-hero-side .run-usage, .program-hero-side .demo-usage-compact { width: 100%; justify-content: center; flex-wrap: wrap; }
+  .program-hero-side .run-usage span, .program-hero-side .demo-usage-compact span { white-space: normal; text-align: center; }
+  .official-run-promise, .source-scope { width: 100%; max-width: none; }
+  .official-run-promise { padding: 14px; }
+  .run-guide { grid-template-columns: 1fr; gap: 11px; padding: 15px; }
+  .program-dashboard { grid-template-columns: 1fr; gap: 10px; }
+  .program-state, .program-variables, .model-note { padding: 16px; }
+  .path-radar { margin-right: -2px; padding: 9px; border-radius: 15px; }
+  .path-radar-node { min-width: 112px; }
+  .program-shell .program-stage { grid-template-columns: 1fr; min-height: 0; border-radius: 22px; }
+  .program-shell .program-action { padding: 24px 19px 28px; }
+  .program-shell .program-action h2 { font-size: clamp(25px, 8vw, 36px); }
+  .program-input textarea { min-height: 120px; }
+  .program-shell .program-stage > .program-visual-fallback,
+  .program-shell .program-stage > .scene-card,
+  .program-shell .program-stage > .diagnosis-map,
+  .program-shell .program-stage > .lab-timer,
+  .program-shell .program-stage > .dialogue-bubble,
+  .program-shell .program-stage > .sandbox-visual { min-height: 210px; }
+  .kanshan-stage-mascot, .program-shell .program-stage > .scene-card::after,
+  .program-shell .program-stage > .dialogue-bubble::after,
+  .program-shell .program-stage > .lab-timer::after,
+  .program-shell .program-stage > .diagnosis-map::after,
+  .program-shell .program-stage > .sandbox-visual::after,
+  .solution-radar::after { width: 78px; height: 78px; right: 12px; bottom: 10px; }
+  .choice-stack, .decision-grid, .result-state-cards { grid-template-columns: 1fr !important; }
+  .choice, .large-actions .choice, .program-action .primary, .game-nav button { width: 100%; min-height: 48px; }
+  .large-actions, .actions { width: 100%; }
+  .result-heading, .result-head { grid-template-columns: 1fr; gap: 17px; }
+  .result, .executable-result { padding: 21px 18px; border-radius: 21px; }
+  .result-item { align-items: flex-start; flex-direction: column; }
+  .result-item button { align-self: flex-start; min-height: 38px; }
+  .evidence-sheet, .demo-evidence-sheet { width: 100%; max-width: none; padding: 25px 19px; }
+  .evidence-text, .demo-evidence-sheet > p { margin-top: 24px; font-size: 17px; line-height: 1.8; }
+
+  /* Simulated run / workbench */
+  .workbench-hero { padding: 38px 0 24px; }
+  .workbench-hero h1 { font-size: clamp(39px, 12vw, 60px); }
+  .input-workbench, .execution-panel, .executable-result { margin-top: 14px; padding: 20px 17px; border-radius: 20px; }
+  .section-heading { align-items: flex-start; flex-direction: column; gap: 12px; margin-bottom: 17px; }
+  .section-heading h2 { font-size: 25px; }
+  .privacy-note { border-radius: 13px; line-height: 1.4; }
+  .article-connected { align-items: flex-start; line-height: 1.5; }
+  .input-grid, .rule-grid { grid-template-columns: 1fr; gap: 12px; }
+  .input-card:first-child { grid-column: auto; }
+  .input-card textarea { min-height: 135px; }
+  .execute-button, .execution-panel .primary, .ai-result-action .primary { width: 100%; }
+  .rule-card { min-height: 0; padding: 18px; }
+  .rule-footer { align-items: flex-start; flex-direction: column; }
+  .generated-draft strong { font-size: 16px; }
+  .sim-source-top { padding: 12px 18px; gap: 9px 13px; }
+  .sim-source-top > span { font-size: 12px; }
+  .sim-article { width: calc(100% - 32px); padding: 42px 0 64px; }
+  .sim-article h1 { font-size: clamp(34px, 10vw, 48px); }
+  .sim-intro { margin: 23px 0; padding: 15px 16px; font-size: 15px; line-height: 1.75; }
+  .source-block h2 { font-size: 22px; }
+  .source-block p { font-size: 16px; line-height: 1.85; }
+}
+
+@media (max-width: 420px) {
+  .topbar { padding-left: 14px; padding-right: 14px; }
+  .container, .discovery-container, .product-container, .workbench-container { padding-left: 14px; padding-right: 14px; }
+  .home-nav a { font-size: 11px; }
+  .hero-orbit { width: min(82vw, 260px); height: min(82vw, 260px); }
+  .published-card, .published-grid .published-card, .published-unified-card, .demo-knowledge-card { padding: 18px 16px; }
+  .published-card h3, .published-grid h3, .demo-knowledge-card h3 { font-size: 21px; }
+  .principle-card { min-height: 190px; }
+  .program-run-orb { width: 150px; height: 150px; }
+  .program-run-orb .demo-hero-mark { width: 114px; height: 114px; }
+  .program-run-orb .kanshan-run-mascot { width: 69px; height: 69px; }
+  .program-shell .program-action { padding-left: 16px; padding-right: 16px; }
+  .run-stats span { font-size: 10px; }
+}
