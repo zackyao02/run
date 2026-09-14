@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "vinext build",
     "start": "next start",
     "lint": "next lint",
     "contract-check": "python tools/local_contract_check.py"
@@ -13,13 +13,21 @@
     "@types/pg": "^8.23.1",
     "next": "^15.5.9",
     "pg": "^8.23.0",
-    "react": "19.1.1",
-    "react-dom": "19.1.1"
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.37.1",
+    "@cloudflare/workers-types": "^4.20260515.1",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.6.0"
-  }
+    "@vitejs/plugin-react": "^6.0.2",
+    "@vitejs/plugin-rsc": "^0.5.34",
+    "typescript": "^5.6.0",
+    "vinext": "^1.0.0-beta.5",
+    "vite": "^8.0.13",
+    "wrangler": "^4.92.0"
+  },
+  "type": "module"
 }

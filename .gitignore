@@ -6,4 +6,9 @@ out/
 .env.*.local
 !.env.example
 .local-data/
+.wrangler/
+dist/
+site-deploy.tar.gz
+.site-stage/
+.stage2/
 npm-debug.log*
