@@ -968,3 +968,36 @@ img, svg, video { max-width: 100%; }
 @media (max-width: 760px) {
   .demo-run-shell .program-run-orb .demo-hero-mark { display: grid; }
 }
+
+/* Keep the official run promise as a single left-to-right flow on phones.
+   The arrow belongs between the two promise blocks; stacking and rotating it
+   made it drift into the hero copy on narrow screens. */
+@media (max-width: 760px) {
+  .official-run-promise {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    padding: 14px 12px;
+  }
+
+  .official-run-promise > span {
+    min-width: 0;
+  }
+
+  .official-run-promise strong {
+    overflow-wrap: anywhere;
+    font-size: 13px;
+  }
+
+  .official-run-promise > i {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    justify-self: center;
+    align-self: center;
+    line-height: 1;
+    transform: none;
+  }
+}
