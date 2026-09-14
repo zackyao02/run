@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
-import { assertPublicRedirectUri, createPendingState, getOAuthConfig, OAUTH_STATE_COOKIE } from "@/src/domain/oauth";
+import { assertPublicRedirectUri, createPendingState, getOAuthConfig, normalizeReturnTo, OAUTH_STATE_COOKIE } from "@/src/domain/oauth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
+    const returnTo = normalizeReturnTo(new URL(request.url).searchParams.get("returnTo") ?? undefined);
     const { appId, appKey, redirectUri } = getOAuthConfig();
     if (!appId || !appKey) return NextResponse.json({ error: "OAUTH_CREDENTIALS_NOT_CONFIGURED", message: "请在服务端配置 App ID 与 App Key。" }, { status: 503 });
     const callback = assertPublicRedirectUri(redirectUri);
-    const state = createPendingState();
+    const state = createPendingState(returnTo);
     const authorize = new URL("https://openapi.zhihu.com/authorize");
     authorize.searchParams.set("redirect_uri", callback);
     authorize.searchParams.set("app_id", appId);

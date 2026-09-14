@@ -60,7 +60,7 @@ Official Verifiable Source Scope
 - FR-UI-001：提供发现、详情、运行、Result、我的（历史/恢复）。排行榜不属于 P0 用户主链路。
 - FR-UI-002：每个关键 Action 都能打开来源证据。
 - FR-UI-003：P0 本地搜索只查询 Published Run。
-- FR-UI-004：无登录也能完整体验 Hero。
+- FR-UI-004：首页与知识详情无需登录即可理解价值；开始 Hero Run 前完成知乎 OAuth，授权后回到原 Run。
 - FR-USAGE-001：Started 计入首次有效交互，Completed 计入后端验证通过；聚合归属于 canonical Run，并在发现卡片与 Result 展示。
 
 ### 内容生产

@@ -11,7 +11,7 @@
 - [ ] 目标 3–5 个真实 Published Run；Supporting 只能使用通过 Source Scope 与人工 Preview 的官方 Bounded Source Excerpt。
 - [ ] 最终 Published Run 至少呈现两种明显不同的 Grammar；真实内容不支持的模型保持未发布，禁止拿 fixture 凑数。
 - [ ] 发现、详情、运行、Result、历史/恢复可用。
-- [ ] 无登录可以完成 Hero。
+- [ ] 首页与知识详情免登录可见；点击 RUN 后完成知乎 OAuth，并能回到 Hero 继续运行。
 
 ## Source 与 AI
 

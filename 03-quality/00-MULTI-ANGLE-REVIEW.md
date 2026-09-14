@@ -4,7 +4,7 @@
 
 ## 2026-09-14 复审结论
 
-**CONDITIONAL GO。** 产品机制与 Runtime 已达到可演示完整度；唯一不能由工程替代的主风险仍是：是否能从官方内容池获得足以发布的真实 Source。当前 Published Run 仍为 0，这一事实必须如实保留。
+**CONDITIONAL GO。** 产品机制与 Runtime 已达到可演示完整度；唯一不能由工程替代的主风险仍是：是否能从官方内容池获得足以发布的真实 Source。当前 Published Run 为 4（1 个 Hero、3 个 Supporting），登录入口采用“浏览免登录、点击 RUN 再授权”，用于满足 OAuth 登录人数要求并保留首屏价值。
 
 ### 五个视角的裁决
 

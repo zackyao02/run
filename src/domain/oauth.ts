@@ -12,7 +12,7 @@ export interface ZhihuUserProfile {
   headline?: string;
 }
 
-interface PendingState { createdAt: number; }
+interface PendingState { createdAt: number; returnTo: string; }
 interface OAuthSession { accessToken: string; expiresAt: number; profile: ZhihuUserProfile | null; }
 
 const pendingStates = new Map<string, PendingState>();
@@ -45,23 +45,34 @@ export function assertPublicRedirectUri(value: string | undefined) {
   return parsed.toString();
 }
 
-export function createPendingState() {
+export function normalizeReturnTo(value: string | undefined, fallback = "/") {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) return fallback;
+  try {
+    const parsed = new URL(value, "https://return.invalid");
+    if (parsed.pathname.startsWith("/api/auth") || parsed.pathname === "/auth/callback") return fallback;
+    return `${parsed.pathname}${parsed.search}${parsed.hash}` || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export function createPendingState(returnTo = "/") {
   prune();
   const state = randomBytes(32).toString("hex");
-  pendingStates.set(state, { createdAt: Date.now() });
+  pendingStates.set(state, { createdAt: Date.now(), returnTo: normalizeReturnTo(returnTo) });
   return state;
 }
 
 export function consumePendingState(state: string, expectedCookie: string | undefined) {
   prune();
-  if (!state || !expectedCookie) return false;
+  if (!state || !expectedCookie) return undefined;
   const a = Buffer.from(state);
   const b = Buffer.from(expectedCookie);
-  if (a.length !== b.length || !timingSafeEqual(a, b)) return false;
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return undefined;
   const pending = pendingStates.get(state);
-  if (!pending || Date.now() - pending.createdAt > STATE_TTL_MS) return false;
+  if (!pending || Date.now() - pending.createdAt > STATE_TTL_MS) return undefined;
   pendingStates.delete(state);
-  return true;
+  return pending;
 }
 
 export function createSession(accessToken: string, expiresIn: number, profile: ZhihuUserProfile | null) {

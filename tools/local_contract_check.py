@@ -11,7 +11,10 @@ def main():
     failures = []
 
     # JSON parse
+    ignored_dirs = {"node_modules", ".next", ".git", ".openai"}
     for p in ROOT.rglob("*.json"):
+        if any(part in ignored_dirs for part in p.parts):
+            continue
         try:
             json.loads(p.read_text(encoding="utf-8"))
         except Exception as e:

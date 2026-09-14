@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { listPublishedRunBundles } from "@/src/data/catalog";
 import { getRunUsage } from "@/src/domain/runtime";
 import { SourceScopeNotice } from "@/src/components/source-scope-notice";
@@ -8,7 +6,6 @@ import { demoKnowledge } from "@/src/data/demo-knowledge";
 import { DemoUsageStats } from "@/src/components/demo-usage-stats";
 import { HomeRefresh } from "@/src/components/home-refresh";
 import { FavoriteButton } from "@/src/components/favorite-button";
-import { getSession, OAUTH_SESSION_COOKIE } from "@/src/domain/oauth";
 
 // Usage is read from the live persistence layer; returning to the homepage
 // after a completed Run must not show a cached number.
@@ -17,8 +14,6 @@ export const dynamic = "force-dynamic";
 function promiseFor(description: string) { return description.length > 112 ? `${description.slice(0, 109)}…` : description; }
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
-  const sessionId = (await cookies()).get(OAUTH_SESSION_COOKIE)?.value;
-  if (!getSession(sessionId)) redirect("/api/auth/zhihu/start");
   const { q = "" } = await searchParams;
   const keyword = q.trim().toLocaleLowerCase();
   const all = await Promise.all((await listPublishedRunBundles()).map(async (bundle) => ({ ...bundle, usage: await getRunUsage(bundle.run.sourceRef.sourceId) })));
@@ -29,7 +24,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   const publishedIndex = new Map(all.map((entry, index) => [entry.run.sourceRef.sourceId, index + 1]));
   const demoOffset = all.length;
   return <main className="shell discovery-shell"><HomeRefresh />
-    <header className="topbar discovery-topbar"><Link href="/" className="brand">用<span>一下</span></Link><nav className="home-nav"><a href="#knowledge">发现知识</a><Link href="/me">我的运行</Link></nav></header>
+    <header className="topbar discovery-topbar"><Link href="/" className="brand">用<span>一下</span></Link><nav className="home-nav"><a href="#knowledge">发现知识</a><Link href="/me">我的运行</Link><Link className="nav-login" href="/api/auth/zhihu/start?returnTo=/">登录知乎</Link></nav></header>
     <div className="container discovery-container">
       <section className="discovery-hero"><div><div className="eyebrow">知乎知识，正在变成行动</div><h1>读过的知识，<br /><em>现在就用一下。</em></h1><p className="lede">把知乎里的方法、判断和经验，变成一次能操作、能留下结果、能回看原文的运行。</p></div><div className="hero-orbit" aria-hidden="true"><div className="orbit-planet-track planet-track-source"><i /></div><div className="orbit-planet-track planet-track-choice"><i /></div><div className="orbit-planet-track planet-track-result"><i /></div><span className="orbit-source">原文</span><span className="orbit-choice">判断</span><span className="orbit-result">结果</span><strong>RUN</strong><img className="kanshan-hero-mascot" src="/mascot/liu-kanshan-wave.gif" alt="刘看山动态形象" /></div></section>
       <form className="run-search" action="/" role="search"><label htmlFor="q">搜索已发布知识</label><div><input id="q" name="q" defaultValue={q} placeholder="按标题、作者或主题搜索" /><button className="secondary" type="submit">搜索</button></div></form>
@@ -59,5 +54,5 @@ type Entry = Awaited<ReturnType<typeof listPublishedRunBundles>>[number] & { usa
 function RunCard({ entry, hero = false, index }: { entry: Entry; hero?: boolean; index: number }) {
   const { run, source, usage } = entry;
   const nodes = run.components.filter((component) => ["check", "task", "choice", "timer", "input"].includes(component.type)).length;
-  return <article className={`published-card published-unified-card ${hero ? "hero-run-card" : ""}`}><div className="demo-card-index">{String(index).padStart(2, "0")}</div><div className="published-card-main"><div className="card-kicker"><span>{hero ? "本期推荐" : "已发布"}</span><span>{run.estimatedMinutes ?? 3} 分钟 · {nodes} 个关键节点</span></div><h3>{run.title}</h3><p className="run-author">{source.authorName} · 知乎知识</p><p className="run-promise">{promiseFor(run.description)}</p><SourceScopeNotice source={source} compact /><div className="demo-card-meta"><div className="run-stats">{usage.started > 0 ? <><span>▶ {usage.started} 次运行</span><span>✓ {usage.completed} 次完成</span>{usage.started >= 10 && <span>{Math.round((usage.completed / usage.started) * 100)}% 完成</span>}</> : <span>首批体验 · 你的运行会成为第一条记录</span>}</div><FavoriteButton runId={run.sourceRef.sourceId} /></div></div><div className="published-card-action"><Link className="secondary-link" href={`/knowledge/${run.sourceRef.sourceId}`}>了解这篇知识</Link><Link className="primary" href={`/runs/${run.sourceRef.sourceId}`}>RUN 一下 →</Link></div></article>;
+  return <article className={`published-card published-unified-card ${hero ? "hero-run-card" : ""}`}><div className="demo-card-index">{String(index).padStart(2, "0")}</div><div className="published-card-main"><div className="card-kicker"><span>{hero ? "本期推荐" : "已发布"}</span><span>{run.estimatedMinutes ?? 3} 分钟 · {nodes} 个关键节点</span></div><h3>{run.title}</h3><p className="run-author">{source.authorName} · 知乎知识</p><p className="run-promise">{promiseFor(run.description)}</p><SourceScopeNotice source={source} compact /><div className="demo-card-meta"><div className="run-stats">{usage.started > 0 ? <><span>▶ {usage.started} 次运行</span><span>✓ {usage.completed} 次完成</span>{usage.started >= 10 && <span>{Math.round((usage.completed / usage.started) * 100)}% 完成</span>}</> : <span>首批体验 · 你的运行会成为第一条记录</span>}</div><FavoriteButton runId={run.sourceRef.sourceId} /></div></div><div className="published-card-action"><Link className="secondary-link" href={`/knowledge/${run.sourceRef.sourceId}`}>了解这篇知识</Link><Link className="primary" href={`/runs/${run.sourceRef.sourceId}`}>登录并 RUN →</Link></div></article>;
 }

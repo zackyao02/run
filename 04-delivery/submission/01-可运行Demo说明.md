@@ -51,4 +51,4 @@ npm run start
 - 将顶部公网链接替换为实际 HTTPS 地址。
 - 配置 `DATABASE_URL`、`LLM_API_KEY`、`LLM_MODEL`、`ZHIHU_API_BASE_URL`、`OPERATOR_SECRET`、`NEXT_PUBLIC_APP_URL`。
 - 执行数据库迁移：`db/migrations/001_init.sql`、`db/migrations/002_runtime_documents.sql`。
-- 用手机 4G/5G 打开首页、官方 Run、原文依据和 Result，确认公网访问无登录阻塞。
+- 用手机 4G/5G 打开首页、知识详情、知乎 OAuth、官方 Run、原文依据和 Result，确认授权后回跳目标 Run 且公网访问稳定。

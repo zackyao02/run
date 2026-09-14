@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { assertPublicRedirectUri, consumePendingState, createSession, getOAuthConfig, OAUTH_SESSION_COOKIE, OAUTH_STATE_COOKIE, safeProfile } from "@/src/domain/oauth";
+import { assertPublicRedirectUri, consumePendingState, createSession, getOAuthConfig, normalizeReturnTo, OAUTH_SESSION_COOKIE, OAUTH_STATE_COOKIE, safeProfile } from "@/src/domain/oauth";
 
 export const dynamic = "force-dynamic";
 
@@ -21,8 +21,14 @@ export async function GET(request: Request) {
       return url.origin;
     }
   })();
-  const redirectHome = (status: string) => NextResponse.redirect(new URL(`/?oauth=${status}`, publicOrigin));
-  if (!consumePendingState(state, stateCookie)) return redirectHome("state_error");
+  const pending = consumePendingState(state, stateCookie);
+  const returnTo = normalizeReturnTo(pending?.returnTo);
+  const redirectHome = (status: string) => {
+    const target = new URL(returnTo, publicOrigin);
+    target.searchParams.set("oauth", status);
+    return NextResponse.redirect(target);
+  };
+  if (!pending) return redirectHome("state_error");
   if (!code) return redirectHome("code_missing");
 
   try {
