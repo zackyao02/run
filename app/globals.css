@@ -878,7 +878,11 @@ img, svg, video { max-width: 100%; }
   .principles-flow { grid-template-columns: 1fr; gap: 11px; }
   .principle-card { min-height: 205px; padding: 18px; border-radius: 18px; }
   .principle-copy strong { font-size: 18px; }
-  .principles-footer { gap: 8px; line-height: 1.5; }
+  .principles-footer { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px 6px; align-items: center; line-height: 1.5; }
+  .principles-footer > span { grid-column: 1 / -1; }
+  .principles-footer > strong { display: inline-flex; align-items: center; gap: 6px; min-width: 0; font-size: 11px; white-space: nowrap; }
+  .principles-footer > strong::before { content: ""; width: 5px; height: 5px; flex: 0 0 5px; border-radius: 50%; background: #70cdb8; box-shadow: 0 0 8px rgba(112, 205, 184, .55); }
+  .principles-footer > i { display: none; }
 
   /* Shared run headers, cards and evidence drawers */
   .demo-topbar, .sim-source-top { align-items: flex-start; flex-wrap: wrap; }
