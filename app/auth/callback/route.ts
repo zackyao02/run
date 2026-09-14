@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { assertPublicRedirectUri, consumePendingState, createSession, getOAuthConfig, normalizeReturnTo, OAUTH_SESSION_COOKIE, OAUTH_STATE_COOKIE, safeProfile } from "@/src/domain/oauth";
+import { assertPublicRedirectUri, consumePendingState, createIdentityCookieValue, createSession, getOAuthConfig, normalizeReturnTo, OAUTH_IDENTITY_COOKIE, OAUTH_SESSION_COOKIE, OAUTH_STATE_COOKIE, safeProfile } from "@/src/domain/oauth";
 
 export const dynamic = "force-dynamic";
 
@@ -49,6 +49,8 @@ export async function GET(request: Request) {
     const session = createSession(token.access_token, expiresIn, profile);
     const response = redirectHome("success");
     response.cookies.set(OAUTH_SESSION_COOKIE, session.id, { httpOnly: true, secure: true, sameSite: "lax", maxAge: Math.max(60, expiresIn), path: "/" });
+    const identity = createIdentityCookieValue(profile, session.expiresAt);
+    if (identity) response.cookies.set(OAUTH_IDENTITY_COOKIE, identity, { httpOnly: true, secure: true, sameSite: "lax", maxAge: Math.max(60, expiresIn), path: "/" });
     response.cookies.delete(OAUTH_STATE_COOKIE);
     return response;
   } catch {

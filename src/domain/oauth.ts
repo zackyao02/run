@@ -1,7 +1,8 @@
-import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 
 export const OAUTH_STATE_COOKIE = "zhihu_oauth_state";
 export const OAUTH_SESSION_COOKIE = "zhihu_oauth_session";
+export const OAUTH_IDENTITY_COOKIE = "zhihu_oauth_identity";
 const STATE_TTL_MS = 10 * 60 * 1000;
 
 export interface ZhihuUserProfile {
@@ -83,10 +84,35 @@ export function createSession(accessToken: string, expiresIn: number, profile: Z
   return { id, expiresAt };
 }
 
-export function getSession(id: string | undefined) {
-  if (!id) return undefined;
+function identitySecret() { return process.env.ZHIHU_OAUTH_APP_KEY?.trim() ?? ""; }
+
+export function createIdentityCookieValue(profile: ZhihuUserProfile | null, expiresAt: number) {
+  const secret = identitySecret();
+  if (!secret) return undefined;
+  const payload = Buffer.from(JSON.stringify({ profile, expiresAt }), "utf8").toString("base64url");
+  const signature = createHmac("sha256", secret).update(payload).digest("base64url");
+  return `${payload}.${signature}`;
+}
+
+function readIdentityCookie(value: string | undefined) {
+  const secret = identitySecret();
+  if (!secret || !value) return undefined;
+  const [payload, encodedSignature] = value.split(".");
+  if (!payload || !encodedSignature) return undefined;
+  const expected = createHmac("sha256", secret).update(payload).digest();
+  const actual = Buffer.from(encodedSignature, "base64url");
+  if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) return undefined;
+  try {
+    const parsed = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as { profile?: ZhihuUserProfile | null; expiresAt?: number };
+    if (!Number.isFinite(parsed.expiresAt) || parsed.expiresAt <= Date.now()) return undefined;
+    return { accessToken: "", expiresAt: parsed.expiresAt, profile: parsed.profile ?? null } satisfies OAuthSession;
+  } catch { return undefined; }
+}
+
+export function getSession(id: string | undefined, identityCookie?: string) {
+  if (!id) return readIdentityCookie(identityCookie);
   prune();
-  return sessions.get(id);
+  return sessions.get(id) ?? readIdentityCookie(identityCookie);
 }
 
 export function deleteSession(id: string | undefined) {
