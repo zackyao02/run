@@ -76,7 +76,7 @@ export function DemoKnowledgeRunner({ article, startWithCompile = false }: { art
     sessionUsageRef.current = { started: false, completed: false }; setSessionUsage(sessionUsageRef.current);
   }
 
-  const mark = ({ rental: "05", meeting: "06", feedback: "07", decision: "08" } as const)[article.kind];
+  const mark = "";
   return <main className={`shell demo-run-shell accent-${article.accent}`}>
     {startWithCompile && compileStep < 3 && <CompileIntro article={article} step={compileStep} />}
     <header className="topbar demo-topbar"><Link href="/" className="brand">用<span>一下</span></Link><div className="demo-top-label">赛事模拟知识</div><Link className="source-nav-link" href={`/demo/${article.id}/source`}>阅读模拟原文 ↗</Link></header>

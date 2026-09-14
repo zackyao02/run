@@ -52,15 +52,6 @@ function modelName(model?: ExecutableRun["program"] extends infer _T ? string : 
   return ({ scenario_simulator: "情境模拟器", diagnosis: "诊断路径图", micro_lab: "微型实验室", rule_tester: "规则压力测试器", gated_path: "行动编排器", dialogue_rehearsal: "对话排练器", parameter_sandbox: "参数沙盘", verification: "规则验证器", practice_cycle: "练习回合" } as Record<string, string>)[model ?? ""] ?? "知识程序";
 }
 
-function runSequence(sourceId: string) {
-  return ({
-    "1251918148732559360": "01",
-    "1509654546602856448": "02",
-    "1393937473601368064": "03",
-    "1307332455322529792": "04",
-  } as Record<string, string>)[sourceId] ?? "RUN";
-}
-
 function experienceCopy(run: ExecutableRun) {
   const copies: Record<string, { bring: string; take: string; result: string }> = {
     "1251918148732559360": { bring: "一条正在考虑的职业方向", take: "一张行业、岗位与长期选择的职业积累图", result: "职业积累地图" },
@@ -98,7 +89,7 @@ export function ProgramRunner({ run, source, sessionEndpoint, usageEndpoint, pro
   const snapshot = useMemo(() => programSnapshot(run, progress), [run, progress]);
   const experience = useMemo(() => experienceCopy(run), [run]);
   const model = run.program?.model;
-  const sequence = runSequence(run.sourceRef.sourceId);
+  const sequence = "";
   const options = current?.options ?? [];
   const evidenceComponent = run.components.find((component) => component.id === evidenceFor);
   // The component kind is part of a session's contract. Including it keeps an old

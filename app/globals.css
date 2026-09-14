@@ -830,23 +830,6 @@ h1 { margin: 12px 0 16px; font-size: clamp(36px, 6vw, 68px); line-height: .98; l
   .program-hero-side .run-usage { justify-content:center; }
 }
 
-/* The Run page should reach the first action quickly on a phone. Keep its
-   promise and counter beside the title instead of stacking a tall hero. */
-@media (max-width:760px) {
-  .program-shell .program-run-hero { grid-template-columns: minmax(0,1fr) 118px; align-items: start; gap: 12px; padding-top: 18px; padding-bottom: 16px; }
-  .program-shell .program-hero-side { width: 118px; justify-items: center; }
-  .program-shell .program-run-orb { width: 112px; height: 112px; border-radius: 20px; }
-  .program-shell .program-run-orb .demo-hero-mark { width: 88px; height: 88px; }
-  .program-shell .program-run-orb .demo-hero-mark strong { font-size: 32px; }
-  .program-shell .program-run-orb .kanshan-run-mascot { width: 56px; height: 56px; right: -5px; bottom: -13px; }
-  .program-shell .program-hero-side .run-usage { width: 118px; gap: 4px; }
-  .program-shell .program-hero-side .run-usage span { padding: 4px 5px; font-size: 10px; }
-  .program-shell .official-run-promise { grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 7px; padding: 9px; margin: 12px 0; }
-  .program-shell .official-run-promise strong { font-size: 12px; line-height: 1.35; }
-  .program-shell .official-run-promise small { font-size: 10px; }
-  .program-shell .official-run-promise > i { font-size: 16px; }
-}
-
 /* Responsive layout pass: keep the same visual language while giving narrow
    screens their own spacing, reading order and touch targets. */
 html { overflow-x: hidden; }
@@ -1018,4 +1001,14 @@ img, svg, video { max-width: 100%; }
     line-height: 1;
     transform: none;
   }
+}
+
+/* Final Run hero override: the decorative orb is intentionally removed. */
+.program-shell .program-hero-side,
+.demo-run-shell .program-hero-side { display: none; }
+.program-shell .demo-run-hero,
+.demo-run-shell .demo-run-hero { grid-template-columns: 1fr; }
+@media (max-width:760px) {
+  .program-shell .program-run-hero,
+  .demo-run-shell .program-run-hero { grid-template-columns: 1fr; gap: 14px; padding-top: 27px; }
 }
