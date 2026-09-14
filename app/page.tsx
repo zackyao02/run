@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { listPublishedRunBundles } from "@/src/data/catalog";
 import { getRunUsage } from "@/src/domain/runtime";
 import { SourceScopeNotice } from "@/src/components/source-scope-notice";
@@ -6,7 +8,7 @@ import { demoKnowledge } from "@/src/data/demo-knowledge";
 import { DemoUsageStats } from "@/src/components/demo-usage-stats";
 import { HomeRefresh } from "@/src/components/home-refresh";
 import { FavoriteButton } from "@/src/components/favorite-button";
-import { ZhihuAuthCard } from "@/src/components/zhihu-auth-card";
+import { getSession, OAUTH_SESSION_COOKIE } from "@/src/domain/oauth";
 
 // Usage is read from the live persistence layer; returning to the homepage
 // after a completed Run must not show a cached number.
@@ -15,6 +17,8 @@ export const dynamic = "force-dynamic";
 function promiseFor(description: string) { return description.length > 112 ? `${description.slice(0, 109)}…` : description; }
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const sessionId = (await cookies()).get(OAUTH_SESSION_COOKIE)?.value;
+  if (!getSession(sessionId)) redirect("/api/auth/zhihu/start");
   const { q = "" } = await searchParams;
   const keyword = q.trim().toLocaleLowerCase();
   const all = await Promise.all((await listPublishedRunBundles()).map(async (bundle) => ({ ...bundle, usage: await getRunUsage(bundle.run.sourceRef.sourceId) })));
@@ -29,7 +33,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     <div className="container discovery-container">
       <section className="discovery-hero"><div><div className="eyebrow">知乎知识，正在变成行动</div><h1>读过的知识，<br /><em>现在就用一下。</em></h1><p className="lede">把知乎里的方法、判断和经验，变成一次能操作、能留下结果、能回看原文的运行。</p></div><div className="hero-orbit" aria-hidden="true"><div className="orbit-planet-track planet-track-source"><i /></div><div className="orbit-planet-track planet-track-choice"><i /></div><div className="orbit-planet-track planet-track-result"><i /></div><span className="orbit-source">原文</span><span className="orbit-choice">判断</span><span className="orbit-result">结果</span><strong>RUN</strong><img className="kanshan-hero-mascot" src="/mascot/liu-kanshan-wave.gif" alt="刘看山动态形象" /></div></section>
       <form className="run-search" action="/" role="search"><label htmlFor="q">搜索已发布知识</label><div><input id="q" name="q" defaultValue={q} placeholder="按标题、作者或主题搜索" /><button className="secondary" type="submit">搜索</button></div></form>
-      <section id="zhihu-login" className="auth-entry" aria-label="知乎账号登录"><ZhihuAuthCard /></section>
       <section id="knowledge" className="published-section official-published-section"><div className="section-title"><div><div className="eyebrow">已发布知乎知识</div><h2>从真实知识开始用一下</h2></div><p>这些文章已由系统根据原文规则自动编译成可运行程序；每一篇都经过来源、原文锚点与人工发布确认。</p></div>
         {hero && <RunCard entry={hero} hero index={publishedIndex.get(hero.run.sourceRef.sourceId) ?? 1} />}{cards.length > 0 && <div className="published-grid">{cards.map((entry) => <RunCard entry={entry} index={publishedIndex.get(entry.run.sourceRef.sourceId) ?? 1} key={entry.run.sourceRef.sourceId} />)}{cards.length % 2 === 1 && <MoreKnowledgePlaceholder />}</div>}
         {!entries.length && <section className="empty-published"><div className="empty-orbit">⌁</div><h2>{keyword ? "没有找到匹配的真实知乎 Run" : "真实赛事知识正在人工核验"}</h2><p>{keyword ? "试试文章标题、作者名或更短的关键词。" : "上方的赛事模拟知识用于完整展示产品能力；真实知乎内容会在通过来源、锚点和人工发布后出现在这里。"}</p></section>}
