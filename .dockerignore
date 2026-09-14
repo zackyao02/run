@@ -1,0 +1,12 @@
+.git
+.next
+dist
+node_modules
+.wrangler
+.npm-cache
+*.log
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+cloudbase-run-upload.zip

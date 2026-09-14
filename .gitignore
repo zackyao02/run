@@ -9,6 +9,7 @@ out/
 .wrangler/
 dist/
 site-deploy.tar.gz
+cloudbase-run-upload.zip
 .site-stage/
 .stage2/
 npm-debug.log*
