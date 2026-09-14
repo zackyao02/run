@@ -1,0 +1,1235 @@
+[
+  {
+    "run": {
+      "schemaVersion": "1.3",
+      "title": "打造职业发展的金字塔",
+      "description": "带入一条真实职业方向，依次检查行业经验、职责积累与可迁移成果，生成职业积累地图。",
+      "capability": "inspect",
+      "category": "职业积累地图",
+      "estimatedMinutes": 2,
+      "sourceRef": {
+        "sourceId": "1251918148732559360",
+        "contentHash": "a02252c773cefd58c7cbd2a528fba70815f0e620f1c6b5250d4ab136c245b86b"
+      },
+      "components": [
+        {
+          "id": "career_fact",
+          "type": "input",
+          "required": true,
+          "title": "写下下一步职业选择，以及能带走的一项成果",
+          "description": "用一句话写清：准备去的行业或问题领域、想继续变深的职责，以及一项项目或作品成果。",
+          "source": {
+            "blockId": "1251918148732559360-block-000",
+            "quote": "一、别离开行业「金字塔」\n吴文定的成功，首先来自她的行业经验积累。如下图所示，她虽然换了 5 份工作，但是从第 2 份工作开始，全部都是在同一个行业里发展，而且经历了从中型到巨头公司的上升阶段",
+            "startOffset": 788,
+            "endOffset": 884,
+            "blockHash": "713b359c0d99fbd1a87c7633eace23b022a2c9d2ef95ef0c1d0828195a9af4bb"
+          },
+          "nextId": "continuity_signal"
+        },
+        {
+          "id": "continuity_signal",
+          "type": "choice",
+          "required": true,
+          "title": "这次变化，积累能否接着往上叠？",
+          "description": "只判断行业经验和职责是否还能被下一站使用，不评价选择好坏。",
+          "source": {
+            "blockId": "1251918148732559360-block-001",
+            "quote": "二、别离开职位「金字塔」\n吴文定的成功，更是因为她从来没有离开过自己的职位「金字塔」。每一个职业都好像一座「金字塔」，「金字塔」的底部面积最大，所以只能用泥做，工资自然不高；中部面积缩小了，所",
+            "startOffset": 21,
+            "endOffset": 117,
+            "blockHash": "fa2bc2036a4fbd9ca951fe86082dc91d1f2cf330e9880caea2b984f952de3667"
+          },
+          "options": [
+            {
+              "id": "continuous",
+              "label": "大部分能延续到下一站",
+              "response": "职业积累标为可延续。",
+              "nextId": "direction"
+            },
+            {
+              "id": "rebuild",
+              "label": "至少一项需要重新建立",
+              "response": "职业积累标为需要补证或重建。",
+              "nextId": "direction"
+            }
+          ]
+        },
+        {
+          "id": "direction",
+          "type": "choice",
+          "required": true,
+          "title": "基于这个判断，这次先怎么走？",
+          "description": "你的选择会决定职业积累图最后保留的行动方向。",
+          "source": {
+            "blockId": "1251918148732559360-block-004",
+            "quote": "三、职业生涯规划，就是选择一条路一直走下去\n我曾在郭丹锐老师博客里看到过一个故事，讲的是一个中专学校教经济学的老师发现了 500 强的商机都是专做一件事，于是劝说下岗卖纽扣的妻子只卖纽扣。后来",
+            "startOffset": 1293,
+            "endOffset": 1389,
+            "blockHash": "5a468e0fb03c8f370c0d17d933fb754bee346daf4fd234d0047e82fd5a228e24"
+          },
+          "options": [
+            {
+              "id": "stack",
+              "label": "沿当前方向再叠加一段",
+              "response": "结果会保留一条继续积累路径。",
+              "nextId": "result"
+            },
+            {
+              "id": "compare",
+              "label": "先比较，再决定是否换轨",
+              "response": "结果会标出需要比较与补证的节点。",
+              "nextId": "result"
+            }
+          ]
+        },
+        {
+          "id": "result",
+          "type": "result",
+          "title": "职业积累地图",
+          "description": "把你的行业经验、职责、成果证据和下一步方向放在一张图里。"
+        }
+      ],
+      "program": {
+        "model": "rule_tester",
+        "primitives": [
+          "observable_state",
+          "deterministic_evaluation",
+          "material_artifact"
+        ],
+        "initialState": "start",
+        "terminalState": "complete",
+        "states": [
+          {
+            "id": "start",
+            "label": "正在带入职业事实",
+            "description": "先把下一步选择与可带走成果写在一起。"
+          },
+          {
+            "id": "continuity_review",
+            "label": "正在判断积累连续性",
+            "description": "只看行业经验和职责能否在下一站继续使用。"
+          },
+          {
+            "id": "direction_review",
+            "label": "正在确定下一步方向",
+            "description": "选择继续叠加，或先比较补证。"
+          },
+          {
+            "id": "complete",
+            "label": "职业积累地图已形成",
+            "description": "可回看填写、状态变化与每条原文依据。"
+          }
+        ],
+        "variables": [
+          {
+            "id": "continuity",
+            "label": "积累连续性",
+            "initialValue": 0,
+            "min": 0,
+            "max": 2,
+            "valueLabels": {
+              "0": "尚未判断",
+              "1": "需要补证或重建",
+              "2": "大部分可延续"
+            }
+          },
+          {
+            "id": "direction",
+            "label": "本轮方向",
+            "initialValue": 0,
+            "min": 0,
+            "max": 2,
+            "valueLabels": {
+              "0": "尚未选择",
+              "1": "先比较补证",
+              "2": "继续叠加"
+            }
+          }
+        ],
+        "transitions": [
+          {
+            "from": "start",
+            "componentId": "career_fact",
+            "when": "completed",
+            "to": "continuity_review"
+          },
+          {
+            "from": "continuity_review",
+            "componentId": "continuity_signal",
+            "when": "choice:continuous",
+            "to": "direction_review",
+            "effects": [
+              {
+                "variableId": "continuity",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "from": "continuity_review",
+            "componentId": "continuity_signal",
+            "when": "choice:rebuild",
+            "to": "direction_review",
+            "effects": [
+              {
+                "variableId": "continuity",
+                "delta": 1
+              }
+            ]
+          },
+          {
+            "from": "direction_review",
+            "componentId": "direction",
+            "when": "choice:stack",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "direction",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "from": "direction_review",
+            "componentId": "direction",
+            "when": "choice:compare",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "direction",
+                "delta": 1
+              }
+            ]
+          }
+        ]
+      },
+      "completion": {
+        "type": "all_required_completed"
+      },
+      "resultArtifact": {
+        "type": "inspect_summary",
+        "fields": [
+          "careerFact",
+          "continuity",
+          "direction",
+          "path",
+          "sourceEvidence"
+        ]
+      }
+    },
+    "source": {
+      "id": "1251918148732559360",
+      "contentHash": "a02252c773cefd58c7cbd2a528fba70815f0e620f1c6b5250d4ab136c245b86b",
+      "title": "打造职业发展的金字塔",
+      "authorName": "杨萃先",
+      "url": "https://api.zhihu.com/km-indep-home/hackathon/v2/knowledge/1251918148732559360",
+      "blocks": [
+        {
+          "id": "1251918148732559360-block-000",
+          "text": "还是请大家先看两个真实的案例。\n吴文定\n工作第 1 年：某冶金行业国企，打杂秘书，月薪 1200 元。\n工作第 2—3 年：法国某中型洗涤用品公司，市场秘书，月薪 2300 元。\n工作第 4—6 年：德国某洗涤用品巨头，品牌经理助理，月薪 6500 元。\n工作第 7—10 年：德国某洗涤用品公司（同上），品牌经理，月薪 15000—30000 元。\n现在：中国某民营洗涤用品公司，高级品牌经理，年薪 70 万元（年终奖金另计）。\n张焕\n工作第 1 年：东方航空公司，票务管理工作，月薪 2000 元。\n工作第 2—5 年：朋友的机票票务公司，副总，月薪 8000 元（后公司倒闭）。\n工作第 4 年：收到联邦快递的加盟邀请（月薪 7000 元），但是拒绝（原因是在读 MBA 期间对房地产企业产生了兴趣）。\n工作第 6 年：合生房地产公司，办公室主任，月薪 5000 元（后因受不了办公室工作的琐碎离职）。\n工作第 7—8 年：某管理咨询公司，兼职一些小的项目，月薪平均 3000 元（同时在读某高校 EMBA 周末班课程）。\n未来：必将长期任职于小的管理咨询公司。因为，想加入大的咨询公司没有人要（大咨询公司要么选择「一张白纸」的新人来培养，要么挖一些有某行业长期经验的老手）；想做 CEO 没人要（没有足够多的行业经验）；想从头做起也没有人要（没有年轻的优势）。\n第一个案例中的吴文定是我大学的师妹，她的事业如此成功，令我羡慕嫉妒，我简直不想在电话簿上看到她的名字，因为一看到就意味着要重温一番嫉妒的滋味……很多读者可能会问，吴文定之所以如此成功，是否由于她是名校市场营销专业的高才生？是否由于她天赋异禀，极其擅长品牌运作？答案都不是，她所有的品牌推广知识都是在工作中一点一滴积累起来的。\n对比吴文定和张焕的职业发展道路，我们总结出职业发展道路的三个原则，请看下 文。\n一、别离开行业「金字塔」\n吴文定的成功，首先来自她的行业经验积累。如下图所示，她虽然换了 5 份工作，但是从第 2 份工作开始，全部都是在同一个行业里发展，而且经历了从中型到巨头公司的上升阶段。这样一来，她 10 年来的行业选择就构成了这样一座「金字塔」：",
+          "blockHash": "713b359c0d99fbd1a87c7633eace23b022a2c9d2ef95ef0c1d0828195a9af4bb"
+        },
+        {
+          "id": "1251918148732559360-block-001",
+          "text": "如果你要跳槽，尽量别离开行业「金字塔」。\n二、别离开职位「金字塔」\n吴文定的成功，更是因为她从来没有离开过自己的职位「金字塔」。每一个职业都好像一座「金字塔」，「金字塔」的底部面积最大，所以只能用泥做，工资自然不高；中部面积缩小了，所以用砖来做，工资达到中游；而到了令万众仰慕的顶部，则是由金子砌成的，工资自然就是金领收入。\n我们用图来表示一下吴文定的职位「金字塔」：",
+          "blockHash": "fa2bc2036a4fbd9ca951fe86082dc91d1f2cf330e9880caea2b984f952de3667"
+        },
+        {
+          "id": "1251918148732559360-block-002",
+          "text": "与吴文定的成功相比，前文中提到的张焕则遭遇了职业发展的寒流。他和我谈论自己的职业发展的时候，是一个最热的夏天，在一个最热的没有空调的房间里，可是我听完他的介绍，看着 30 岁还没有确定人生发展方向的他，感到了深深的寒意。\n我们用图回顾一下张焕的职业发展道路：\n行业：",
+          "blockHash": "974b9d8116ba2b7110ed83f5742b0ec7d1a8777ede0adbb68b56dc4248aa4831"
+        },
+        {
+          "id": "1251918148732559360-block-003",
+          "text": "职位：",
+          "blockHash": "907e277641d4789f816025541ee04754c40f8dbacc25abcceddbb476fa3a992e"
+        },
+        {
+          "id": "1251918148732559360-block-004",
+          "text": "看到这幅图，读者可能已经在为张焕扼腕叹息了。他曾经多么幸运，从航空公司到票务公司一帆风顺，年仅 26 岁就担任了副总经理的职位；然后又被大名鼎鼎的联邦快递看中，虽然薪水并不太理想，却给他提供了爬上「物流金字塔」的通道。从来没有加入过大型公司的他恰恰应该到联邦快递这样的大公司去开阔一下眼界，了解一下尖端的物流公司是如何运作的，在 3 到 5 年之内他就可以把自己打造成一个物流高级人才，手中掌握大量的客户资源，何愁没有更好的职位向他伸出橄榄枝？世界一流的物流公司，正看着中国这个大市场蠢蠢欲动，只要政府放开政策，立刻会招兵买马大干一番的！\n张焕的职业发展之路，没有沿着同一座「金字塔」直线向上，而是更换了 3 座「金字塔」：物流、房地产、管理咨询。这 3 座「金字塔」无一例外都散发着巨大的魅力，对张焕构成了致命的诱惑，诱使他干一行想着另一行。就像一个已婚男人昼夜思念着外遇，然后一狠心来到外遇身边，却发现仍然不是自己所爱的，然后又更换另一个……\n当你在「金字塔」最底层时，你可能看不到天空，看不到希望，只看到了压在你头上的密密麻麻的石阶和无数挡在你前面的人的脚后跟！所以，很多很多人就像张焕一样，这塔望着那塔高，到了那塔把脚翘，把时间全部浪费在「金字塔」底部的徘徊上。其实张焕所接触到的 3 个行业都是非常有发展潜力的行业，只要他勤勤恳恳，一心一意，在一个行业一干就是七八年，甚至 10 年，以他能考上南开大学的智慧和才干，他必然能在某个公司里占据要职，挣着高薪，得到下属的尊重和老板的器重！\n当我和张焕在必胜客吃「饼」长谈的时候，我问他：「你觉得自己最大的优点是什么？」张焕不假思索地说：「我最大的优点就是我的兴趣特别广泛，我对各行各业都有很浓厚的兴趣，希望能有所发展、有所钻研！」30 岁的张焕依然没有意识到：他自诩的「兴趣广泛」这个优点，恰恰是他职业发展当中要命的弱点。张焕的所谓「兴趣广泛」，实际上还有一层含义：暗示别人自己才能广泛，在别人的行业里俺也不含糊，也有一套！有这样心理的人，总担心自己的才能在这个行业不能得到施展，一定要换几个行业多尝试一下，以免埋没了自己的才干，所以他们频繁换工作，辗转于风马牛不相及的不同职业以验证自己广泛的「兴趣兼才干」！这种验证，可以发生在大学毕业后的一两年之内，那时候是有权利有时间到不同的岗位上体验的，看看自己的能力和兴趣到底在哪里，但是这个验证的时间越短越好。\n我非常不赞成在一个行业超过 3 年之后再换行业，基本上，35 岁以前我们的生存资本靠打拼，而 35 岁以后靠的是积累，包括人脉、经验、口碑、客户……如果更换行业，说明你过去 3 年的积累将付之东流。\n有很多人在工作到两三年的时候，会觉得诸事不顺，心情烦闷，似乎换一个行业就会云开雾散，其实这样做只是让你从头开始，过了两三年你还会遇到同样的瓶颈期。这就犹如长跑，开始的时候很轻松，但是很快就会有第一次的难受，但过了这一段又能轻松地跑很长时间；接下来碰到第二次的难受，坚持之后又能再跑一段……真正能熬过三五次难受的人比例不大，所以只要你坚持了，这个资本就够你这辈子享用的了。\n三、职业生涯规划，就是选择一条路一直走下去\n我曾在郭丹锐老师博客里看到过一个故事，讲的是一个中专学校教经济学的老师发现了 500 强的商机都是专做一件事，于是劝说下岗卖纽扣的妻子只卖纽扣。后来夫妻俩取得了巨大的成功，男老师为女儿也选择了一条「专」英语的职业道路。郭老师在文章最后这样写道：\n「我曾听说，坚持登一座山峰的人，一定会到达顶峰。现在看来，一辈子坚持只做一件事的人一定会成功，并且会成为一个强者、一个佼佼者。」\n这句话我也借以送给正在求职路上挣扎的你，须知「Great works are performed not by strength, but by perseverance.」",
+          "blockHash": "5a468e0fb03c8f370c0d17d933fb754bee346daf4fd234d0047e82fd5a228e24"
+        }
+      ],
+      "completeness": "full",
+      "scope": "hackathon_event",
+      "provenance": "hackathon_event_api",
+      "contentLength": 2834,
+      "eligibleForCompiler": true,
+      "publishingDisclosureRequired": false,
+      "coverage": {
+        "type": "full",
+        "startOffset": 0,
+        "endOffset": 2834
+      }
+    },
+    "role": "hero"
+  },
+  {
+    "run": {
+      "schemaVersion": "1.3",
+      "title": "拯救注意力分散：使专注力提升，反馈给学习行动效力",
+      "description": "带入一件当前小事，完成一次呼吸或短时专注采样，留下方法与真实中断反馈。",
+      "capability": "practice",
+      "category": "专注力微型实验",
+      "estimatedMinutes": 3,
+      "sourceRef": {
+        "sourceId": "1509654546602856448",
+        "contentHash": "aefb8f3ab8698d4c6be7630d24ba0754702adbc5d85a56af592e212a0815ce9b"
+      },
+      "components": [
+        {
+          "id": "focus_object",
+          "type": "input",
+          "required": true,
+          "title": "写下这一分钟只做的一件小事",
+          "description": "把任务缩到一分钟内可以真实推进的动作；结果会把它带回实验记录。",
+          "source": {
+            "blockId": "1509654546602856448-block-000",
+            "quote": "注意力分散，难以集中？\n先不要太着急，这是我们在面对重要挑战时，再正常不过的反应。\n不管你是即将走向考场的高三学生，还是正在为此备战的高一、高二的同学，或者是他们的老师和家长。这篇文章有可能帮",
+            "startOffset": 139,
+            "endOffset": 235,
+            "blockHash": "b7cb9fb0ed285ee24bf3771a15e984085057ba82889963f44850f7e85c0d8ba8"
+          },
+          "nextId": "method"
+        },
+        {
+          "id": "method",
+          "type": "choice",
+          "required": true,
+          "title": "这轮用哪种方法把注意力带回来？",
+          "description": "两种方法会进入不同的计时过程与反馈。",
+          "source": {
+            "blockId": "1509654546602856448-block-000",
+            "quote": "2. 维持专注：正念呼吸练习\n正念（mindfulness）是一种有意识地、把注意力聚焦在当下的心理干预技术。心理学将它定义为「通过有意地、不评价地注意当下而生起的觉知」（Kabat-Zinn",
+            "startOffset": 2150,
+            "endOffset": 2246,
+            "blockHash": "b7cb9fb0ed285ee24bf3771a15e984085057ba82889963f44850f7e85c0d8ba8"
+          },
+          "options": [
+            {
+              "id": "breath",
+              "label": "正念呼吸：先练习察觉走神",
+              "response": "进入一分钟呼吸观察。",
+              "nextId": "timer_breath"
+            },
+            {
+              "id": "focus",
+              "label": "短时番茄：直接推进这件小事",
+              "response": "进入一分钟专注采样。",
+              "nextId": "timer_focus"
+            }
+          ]
+        },
+        {
+          "id": "timer_breath",
+          "type": "timer",
+          "required": true,
+          "title": "进行一分钟呼吸观察",
+          "description": "这是为了现场完成而缩短的采样，不等同于原文建议的完整练习时长。",
+          "durationSeconds": 60,
+          "source": {
+            "blockId": "1509654546602856448-block-000",
+            "quote": "2. 维持专注：正念呼吸练习\n正念（mindfulness）是一种有意识地、把注意力聚焦在当下的心理干预技术。心理学将它定义为「通过有意地、不评价地注意当下而生起的觉知」（Kabat-Zinn",
+            "startOffset": 2150,
+            "endOffset": 2246,
+            "blockHash": "b7cb9fb0ed285ee24bf3771a15e984085057ba82889963f44850f7e85c0d8ba8"
+          },
+          "nextId": "feedback_breath"
+        },
+        {
+          "id": "feedback_breath",
+          "type": "choice",
+          "required": true,
+          "title": "这一分钟，你怎样发现并处理走神？",
+          "description": "只记录刚才实际发生的反馈。",
+          "source": {
+            "blockId": "1509654546602856448-block-001",
+            "quote": "随着经验的增长，你会发现自己越来越容易察觉到走神的状态，也会越来越快地来回来，这让你有效学习的时间变长了。",
+            "startOffset": 131,
+            "endOffset": 184,
+            "blockHash": "43d309532c1b241dbcf6886ad33de5c523b8510d6384e7956606cdaa162dc85d"
+          },
+          "options": [
+            {
+              "id": "returned",
+              "label": "发现后把注意力带回来了",
+              "response": "记录为一次成功返回。",
+              "nextId": "result"
+            },
+            {
+              "id": "drifted",
+              "label": "直到结束才发现一直走神",
+              "response": "记录为下一轮需要更早察觉。",
+              "nextId": "result"
+            }
+          ]
+        },
+        {
+          "id": "timer_focus",
+          "type": "timer",
+          "required": true,
+          "title": "进行一分钟短时专注",
+          "description": "直接推进你写下的小事，并留意中断；这是缩短的现场采样。",
+          "durationSeconds": 60,
+          "source": {
+            "blockId": "1509654546602856448-block-001",
+            "quote": "3. 提升学习效率：番茄工作法\n番茄工作法是一种劳逸结合的工作方法。\n一组番茄包含 25 分钟，每工作 20 分钟，休息 5 分钟。\n每 4 ~ 5 组番茄可以设置一个 15 ~ 20 分钟的",
+            "startOffset": 185,
+            "endOffset": 281,
+            "blockHash": "43d309532c1b241dbcf6886ad33de5c523b8510d6384e7956606cdaa162dc85d"
+          },
+          "nextId": "feedback_focus"
+        },
+        {
+          "id": "feedback_focus",
+          "type": "choice",
+          "required": true,
+          "title": "这一分钟，这件小事推进到哪里？",
+          "description": "反馈决定结果是保留节奏还是调整下一轮。",
+          "source": {
+            "blockId": "1509654546602856448-block-001",
+            "quote": "一组番茄包含 25 分钟，每工作 20 分钟，休息 5 分钟。",
+            "startOffset": 220,
+            "endOffset": 251,
+            "blockHash": "43d309532c1b241dbcf6886ad33de5c523b8510d6384e7956606cdaa162dc85d"
+          },
+          "options": [
+            {
+              "id": "advanced",
+              "label": "有可观察的推进",
+              "response": "记录为可继续复用的短时节奏。",
+              "nextId": "result"
+            },
+            {
+              "id": "interrupted",
+              "label": "被中断，没有形成推进",
+              "response": "记录中断，下一轮改用更小动作或呼吸法。",
+              "nextId": "result"
+            }
+          ]
+        },
+        {
+          "id": "result",
+          "type": "result",
+          "title": "专注实验记录",
+          "description": "保留实验对象、方法、计时和真实反馈。"
+        }
+      ],
+      "program": {
+        "model": "micro_lab",
+        "primitives": [
+          "observable_state",
+          "repeatable_experiment",
+          "feedback_loop",
+          "material_artifact"
+        ],
+        "initialState": "start",
+        "terminalState": "complete",
+        "states": [
+          {
+            "id": "start",
+            "label": "正在确定实验对象",
+            "description": "先写下一分钟内要推进的小事。"
+          },
+          {
+            "id": "method",
+            "label": "正在选择专注方法",
+            "description": "呼吸观察与短时番茄会进入不同路径。"
+          },
+          {
+            "id": "breath",
+            "label": "呼吸观察进行中",
+            "description": "计时后记录是否察觉并带回注意力。"
+          },
+          {
+            "id": "focus",
+            "label": "短时专注进行中",
+            "description": "计时后记录是否产生可观察推进。"
+          },
+          {
+            "id": "feedback_breath",
+            "label": "正在记录走神反馈",
+            "description": "只记录刚才真实发生的情况。"
+          },
+          {
+            "id": "feedback_focus",
+            "label": "正在记录推进反馈",
+            "description": "只记录刚才真实发生的情况。"
+          },
+          {
+            "id": "complete",
+            "label": "专注实验记录已形成",
+            "description": "可以换一种方法再次运行并比较。"
+          }
+        ],
+        "variables": [
+          {
+            "id": "method",
+            "label": "实验方法",
+            "initialValue": 0,
+            "min": 0,
+            "max": 2,
+            "valueLabels": {
+              "0": "尚未选择",
+              "1": "正念呼吸",
+              "2": "短时番茄"
+            }
+          },
+          {
+            "id": "feedback",
+            "label": "本轮反馈",
+            "initialValue": 0,
+            "min": 0,
+            "max": 4,
+            "valueLabels": {
+              "0": "尚未记录",
+              "1": "成功带回注意力",
+              "2": "需要更早察觉",
+              "3": "产生实际推进",
+              "4": "发生中断"
+            }
+          }
+        ],
+        "transitions": [
+          {
+            "from": "start",
+            "componentId": "focus_object",
+            "when": "completed",
+            "to": "method"
+          },
+          {
+            "from": "method",
+            "componentId": "method",
+            "when": "choice:breath",
+            "to": "breath",
+            "effects": [
+              {
+                "variableId": "method",
+                "delta": 1
+              }
+            ]
+          },
+          {
+            "from": "method",
+            "componentId": "method",
+            "when": "choice:focus",
+            "to": "focus",
+            "effects": [
+              {
+                "variableId": "method",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "from": "breath",
+            "componentId": "timer_breath",
+            "when": "completed",
+            "to": "feedback_breath"
+          },
+          {
+            "from": "feedback_breath",
+            "componentId": "feedback_breath",
+            "when": "choice:returned",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "feedback",
+                "delta": 1
+              }
+            ]
+          },
+          {
+            "from": "feedback_breath",
+            "componentId": "feedback_breath",
+            "when": "choice:drifted",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "feedback",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "from": "focus",
+            "componentId": "timer_focus",
+            "when": "completed",
+            "to": "feedback_focus"
+          },
+          {
+            "from": "feedback_focus",
+            "componentId": "feedback_focus",
+            "when": "choice:advanced",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "feedback",
+                "delta": 3
+              }
+            ]
+          },
+          {
+            "from": "feedback_focus",
+            "componentId": "feedback_focus",
+            "when": "choice:interrupted",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "feedback",
+                "delta": 4
+              }
+            ]
+          }
+        ]
+      },
+      "completion": {
+        "type": "all_required_completed"
+      },
+      "resultArtifact": {
+        "type": "mission_snapshot",
+        "fields": [
+          "focusObject",
+          "method",
+          "feedback",
+          "path",
+          "sourceEvidence"
+        ]
+      }
+    },
+    "source": {
+      "id": "1509654546602856448",
+      "contentHash": "aefb8f3ab8698d4c6be7630d24ba0754702adbc5d85a56af592e212a0815ce9b",
+      "title": "拯救注意力分散：使专注力提升，反馈给学习行动效力",
+      "authorName": "窦泽南",
+      "url": "https://api.zhihu.com/km-indep-home/hackathon/v2/knowledge/1509654546602856448",
+      "blocks": [
+        {
+          "id": "1509654546602856448-block-000",
+          "text": "「在上课时发呆和走神的时间越来越多，总是不记得老师讲到了哪些重点。」\n「自习的时候常常无法集中注意，什么都学不进去，做题和复习的效率开始下降，更焦虑了...怎么办？」\n「受疫情影响在家学习，如何提高学习效率，延长专注学习的时间？」\n「压力很大，如何克服在学习的时候胡思乱想？」\n注意力分散，难以集中？\n先不要太着急，这是我们在面对重要挑战时，再正常不过的反应。\n不管你是即将走向考场的高三学生，还是正在为此备战的高一、高二的同学，或者是他们的老师和家长。这篇文章有可能帮到你或身边的人。\n这是一篇「提升学习效率」的实操指南，我们挑选了「高效、易操作」的心理学工具，帮助你在有压力的状态下尝试集中注意力。你不妨抱着好奇心，试一试它们，看看会有怎样的体验。\n但在介绍工具之前，我想先花一些时间，带你了解压力是如何影响学习效率的。这些信息很重要，能帮助你理解哪些心理学工具能帮到你。\n一、为什么压力越大，心越乱？\n当你的生活即将进入到一个兵荒马乱的阶段，你的身体识别出环境的信号，开始做出反应。\n最先感受到的变化就是，自己的所有感觉都被放大了。噪声变得格外刺耳，你开始对一些味道感到敏感，坐着或者站着很容易体验到身体不舒服，有时是痒，有时是疼。\n你的想法也变得丰富起来，它们匆忙地闯进你的大脑，很快地又被别的想法替代，就像站在繁忙地路口，看到来去匆匆的车流，你的头脑无法专注在此时此刻，一不小心就被这些车流带向远方。\n然后是情绪的变化，连很小的事情都有可能引起你情绪的剧烈波动，你可能比平常更想大喊大叫，或者更容易哭出来（大卫·巴洛等, 2013）。\n这些被唤起的兴奋感是你的天赋。在人类漫长的演化史中，那些眼观六路，耳听八方，时刻关注着威胁的人，更容易在战场上存活下来。\n但应对考试，又不同于扛枪上阵，你可能希望自己的注意力能稳定地安驻在一个地方，好让自己牢牢地记住单词，或者深入思考解题的过程。\n然而，集中注意力的要诀，并不是强迫自己保持专注。就好像挠痒痒总会越挠越痒，当你越是拼命地想要让自己集中注意力，你的注意力就越难以安放在当下的任务上。\n想要提高效率，需要你改变思路。\n二、提升专注力? 最先做的是调整预期\n我为你提供的解决方案，有一些可能会让你觉得和你以往认知的方向不一致，或者你可能不太敢相信这对你有用。\n产生这些怀疑都没关系，先试一试按照我说的做，我会告诉你原因。\n即使在临近考试的阶段，我们也不需要把全部的时间都用在学习上，真正要做的，是让你在学习的时间里变得更有效率。\n你的收获=时间*效率\n也就是所谓的磨刀不误砍柴工。\n所以我给你的第一个建议是建立一个合适的预期。\n既包括对于我们学习结果的预期，也包括了对于我们学习状态的预期。\n只有合理建立预期，你才能从难以集中的思绪中解脱出来，更坦然地面对高考复习，提高时间性价比。\n· 对学习结果的预期\n考前复习的目的，是为了让我们已经学会的部分变得更扎实，少丢分。而不是为了让我们短时间突破自己的极限，获得更高的提升。\n把自己的时间放在重要的事情上，就是最高效的使用方式，这些重要的事情可能包括：老师反复强调的必考内容，模拟考试中经常出现的知识点和考点，自己在日常练习中常常犯错的地方。\n只要把这些地方吃透，你就已经可以在考场上有一个稳定的发挥。\n在此基础上，你可以尝试去探索自己的边界在哪里，但不用去死磕超出自己能力太多的部分。因为当你死磕的时候，那些焦虑的情绪，担忧的想法，烦躁的状态就会悄悄地控制你，让你开始变得心浮气躁。\n· 对学习状态的预期\n你首先是一个人，而不是一台机器。人在工作的时候就需要劳逸结合，越是复杂艰难的工作，越需要休息。\n没有人能在完全不休息的状态还保持高效。也没有人能保证任何时候都是精力满满的状态，不走神，不犯错。\n所以，不用在乎你走神了多少次，浪费了多少时间。你要做的就是在每次意识到自己走神时提醒一下自己，就像上课时同桌会好心拉一拉你的衣袖，提醒你继续听课。\n不用着急责备自己走神，因为责备自己要花更多的时间，这是不划算的。\n明确了预期，接下来聊聊该具体怎么做。\n三、提升专注力&学习效率的好方法，有哪些？\n1. 开始专注：5 分钟规则\n在你心绪烦杂时，很难马上把注意力投入学习中，你可能总是忍不住想要拖延，或者做一些别的事情，就是迟迟无法进入学习状态。\n你甚至会因为「我就是没有办法好好学习」的念头，而无法专注学习。\n在这种情况下，不用强迫自己一次学得太久，试着告诉自己，先学 5 分钟试试看。5 分钟不管多痛苦，总还是可以忍受的。\n5 分钟就有可能帮助你复习到一个知识点，有这 5 分钟，肯定不会比没有这 5 分钟更差。\n所以先从学 5 分钟开始吧。\n适用场景：\n当你意识到想要复习，却迟迟无法开始的时候。\n起效机制：\n「试试看」是一句魔咒，它能够让看起来不可能发生的事情，成为可能。\n我们的大脑很难想象到自己在一个小时之后的状态，所以「保持专注一个小时」对它来说是一个无法想象的任务。\n但 5 分钟看起来要容易得多。当一件事看起来很容易实现时，我们就更愿意马上去做它（斯科特·杨, 2022）。\n小提示：\n5 分钟结束后，如果你还是感到无法集中注意，那也可以再来 5 分钟试试看，或者尝试其他办法。\n2. 维持专注：正念呼吸练习\n正念（mindfulness）是一种有意识地、把注意力聚焦在当下的心理干预技术。心理学将它定义为「通过有意地、不评价地注意当下而生起的觉知」（Kabat-Zinn, 2003）。\n从这个定义你会发现，正念，是一种训练注意力品质的心理练习技术。\n在正念练习中，我们会不加评判地留意到，自己把注意力投放在哪一件具体的事情上，观察到自己走神的过程，并训练在走神时把注意力拉回的能力。\n心理学研究发现，坚持正念练习，有助于培育注意力的专注稳定性。而且练习时间越久，对注意力的改善效果越明显（Semple, 2010）。\n常见的正念练习包括正念呼吸，身体扫描，正念行走等技术。其中「正念呼吸」是最适合初学者应对走神的练习。\n我们就此研发了一个 「正念：呼吸」音频练习，你可以尝试跟着指导语来练习。\n「正念：呼吸音频」08'37'' ⬇️",
+          "blockHash": "b7cb9fb0ed285ee24bf3771a15e984085057ba82889963f44850f7e85c0d8ba8"
+        },
+        {
+          "id": "1509654546602856448-block-001",
+          "text": "适用场景\n你可以在学习的间歇，尝试跟着这个段音频进行练习，每次大概需要 5~10 分钟的时间。练习正念本身也是一个帮助调整注意力到最佳状态的方式。\n起效机制\n在正念练习中，当你发现自己走神了，并且从走神中拉回到正在进行的呼吸上，你的注意力就得到了一次有效锻炼。\n随着经验的增长，你会发现自己越来越容易察觉到走神的状态，也会越来越快地来回来，这让你有效学习的时间变长了。\n3. 提升学习效率：番茄工作法\n番茄工作法是一种劳逸结合的工作方法。\n一组番茄包含 25 分钟，每工作 20 分钟，休息 5 分钟。\n每 4 ~ 5 组番茄可以设置一个 15 ~ 20 分钟的长休息。\n如果你还在学校里自习，也可以尝试按照学校的课间节奏休息。\n充分使用休息时间很重要，在这段休息时间里，尝试减少那些让自己继续动脑的休息方式，例如看小说、玩电脑手机游戏等等。\n多尝试一些只调动身体感官的活动，让大脑放空一会儿，例如：\n5 分钟的正念，放松大脑\n望着窗外，发一会儿呆\n翻阅自己喜欢的画册、照片\n把桌面收拾整洁\n戴上耳机，听听喜欢的音乐\n到安静的户外，听听自然",
+          "blockHash": "43d309532c1b241dbcf6886ad33de5c523b8510d6384e7956606cdaa162dc85d"
+        }
+      ],
+      "completeness": "bounded_excerpt",
+      "scope": "hackathon_event",
+      "provenance": "hackathon_event_api",
+      "contentLength": 3000,
+      "eligibleForCompiler": true,
+      "publishingDisclosureRequired": true,
+      "coverage": {
+        "type": "bounded_excerpt",
+        "startOffset": 0,
+        "endOffset": 3000,
+        "providerLimit": 3000,
+        "disclosure": "基于知乎赛事官方接口提供的前 3000 字符生成，不代表整篇文章。"
+      }
+    },
+    "role": "supporting"
+  },
+  {
+    "run": {
+      "schemaVersion": "1.3",
+      "title": "明确目标：运用「四大原则」目标更有影响力！",
+      "description": "带入一个真实目标，依次运行片段明确覆盖的聚焦、具体与期限三条规则，生成目标修正卡。",
+      "capability": "inspect",
+      "category": "目标结构测试",
+      "estimatedMinutes": 2,
+      "sourceRef": {
+        "sourceId": "1393937473601368064",
+        "contentHash": "102c5c235bc021e136910ca48b6782fc5498846a3ea78e3e17ec596e5effc642"
+      },
+      "components": [
+        {
+          "id": "goal_draft",
+          "type": "input",
+          "required": true,
+          "title": "写下目标、完成标志和期限",
+          "description": "用一句话写：要完成什么、什么样算完成、最晚什么时候完成。先写草案，不要求一次完美。",
+          "source": {
+            "blockId": "1393937473601368064-block-000",
+            "quote": "原则 1：要聚焦，设定一个共同目标。\n脑科学方面的研究有力地证明了这一点。厄尔·米勒是麻省理工学院的脑神经学教授，他的研究显示：人类大脑的并行计算能力很有限，大脑无法同时专注于两件事情，两件事",
+            "startOffset": 120,
+            "endOffset": 216,
+            "blockHash": "102c5c235bc021e136910ca48b6782fc5498846a3ea78e3e17ec596e5effc642"
+          },
+          "nextId": "gap_assess"
+        },
+        {
+          "id": "gap_assess",
+          "type": "choice",
+          "required": true,
+          "title": "对照文章规则，这份草案最缺哪一项？",
+          "description": "这一步不会替你打分；它只确定下一轮最应该先补的结构。",
+          "source": {
+            "blockId": "1393937473601368064-block-000",
+            "quote": "原则 3：有期限，明确完成的截止时间。\n罗恩·马歇尔是美国第二大图书商博德斯集团（Borders Group）的 CEO，他对于「做事情一定要设定时间期限」的原则有着深刻的认识。很多年前，他想",
+            "startOffset": 1838,
+            "endOffset": 1934,
+            "blockHash": "102c5c235bc021e136910ca48b6782fc5498846a3ea78e3e17ec596e5effc642"
+          },
+          "options": [
+            {
+              "id": "ready",
+              "label": "三项都已清楚",
+              "response": "目标结构暂时完整，可进入下一步行动。",
+              "nextId": "next_action"
+            },
+            {
+              "id": "focus",
+              "label": "目标对象还不够聚焦",
+              "response": "结果会提示先缩小到一个共同目标。",
+              "nextId": "next_action"
+            },
+            {
+              "id": "result",
+              "label": "完成标志还不够具体",
+              "response": "结果会提示补一条可观察结果。",
+              "nextId": "next_action"
+            },
+            {
+              "id": "deadline",
+              "label": "期限仍然模糊",
+              "response": "结果会提示补一个明确的时间边界。",
+              "nextId": "next_action"
+            }
+          ]
+        },
+        {
+          "id": "next_action",
+          "type": "choice",
+          "required": true,
+          "title": "这次先把目标推进到哪里？",
+          "description": "选择后会生成一张带着原草案和下一步的目标修正卡。",
+          "source": {
+            "blockId": "1393937473601368064-block-000",
+            "quote": "原则 3：有期限，明确完成的截止时间。\n罗恩·马歇尔是美国第二大图书商博德斯集团（Borders Group）的 CEO，他对于「做事情一定要设定时间期限」的原则有着深刻的认识。很多年前，他想",
+            "startOffset": 1838,
+            "endOffset": 1934,
+            "blockHash": "102c5c235bc021e136910ca48b6782fc5498846a3ea78e3e17ec596e5effc642"
+          },
+          "options": [
+            {
+              "id": "rewrite",
+              "label": "现在就补写最缺的一项",
+              "response": "结果会保留一条立即修正动作。",
+              "nextId": "result"
+            },
+            {
+              "id": "review",
+              "label": "带着草案找相关人共同确认",
+              "response": "结果会保留一条共同确认动作。",
+              "nextId": "result"
+            }
+          ]
+        },
+        {
+          "id": "result",
+          "type": "result",
+          "title": "目标修正卡",
+          "description": "把原目标、可观察结果、期限和三条规则状态放在一起。"
+        }
+      ],
+      "program": {
+        "model": "rule_tester",
+        "primitives": [
+          "observable_state",
+          "deterministic_evaluation",
+          "material_artifact"
+        ],
+        "initialState": "start",
+        "terminalState": "complete",
+        "states": [
+          {
+            "id": "start",
+            "label": "正在记录目标草案",
+            "description": "把目标、完成标志和期限放在一句话里。"
+          },
+          {
+            "id": "gap_review",
+            "label": "正在定位最小缺口",
+            "description": "根据原文确认先补聚焦、具体或期限。"
+          },
+          {
+            "id": "action_review",
+            "label": "正在确定下一步",
+            "description": "选择现在补写，或找相关人共同确认。"
+          },
+          {
+            "id": "complete",
+            "label": "目标修正卡已形成",
+            "description": "可直接看到已满足规则与仍需改写处。"
+          }
+        ],
+        "variables": [
+          {
+            "id": "gap",
+            "label": "最先要补",
+            "initialValue": 0,
+            "min": 0,
+            "max": 4,
+            "valueLabels": {
+              "0": "尚未判断",
+              "1": "聚焦",
+              "2": "完成标志",
+              "3": "期限",
+              "4": "结构暂时完整"
+            }
+          },
+          {
+            "id": "action",
+            "label": "下一步",
+            "initialValue": 0,
+            "min": 0,
+            "max": 2,
+            "valueLabels": {
+              "0": "尚未选择",
+              "1": "立即补写",
+              "2": "共同确认"
+            }
+          }
+        ],
+        "transitions": [
+          {
+            "from": "start",
+            "componentId": "goal_draft",
+            "when": "completed",
+            "to": "gap_review"
+          },
+          {
+            "from": "gap_review",
+            "componentId": "gap_assess",
+            "when": "choice:ready",
+            "to": "action_review",
+            "effects": [
+              {
+                "variableId": "gap",
+                "delta": 4
+              }
+            ]
+          },
+          {
+            "from": "gap_review",
+            "componentId": "gap_assess",
+            "when": "choice:focus",
+            "to": "action_review",
+            "effects": [
+              {
+                "variableId": "gap",
+                "delta": 1
+              }
+            ]
+          },
+          {
+            "from": "gap_review",
+            "componentId": "gap_assess",
+            "when": "choice:result",
+            "to": "action_review",
+            "effects": [
+              {
+                "variableId": "gap",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "from": "gap_review",
+            "componentId": "gap_assess",
+            "when": "choice:deadline",
+            "to": "action_review",
+            "effects": [
+              {
+                "variableId": "gap",
+                "delta": 3
+              }
+            ]
+          },
+          {
+            "from": "action_review",
+            "componentId": "next_action",
+            "when": "choice:rewrite",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "action",
+                "delta": 1
+              }
+            ]
+          },
+          {
+            "from": "action_review",
+            "componentId": "next_action",
+            "when": "choice:review",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "action",
+                "delta": 2
+              }
+            ]
+          }
+        ]
+      },
+      "completion": {
+        "type": "all_required_completed"
+      },
+      "resultArtifact": {
+        "type": "inspect_summary",
+        "fields": [
+          "goalDraft",
+          "gap",
+          "action",
+          "sourceEvidence"
+        ]
+      }
+    },
+    "source": {
+      "id": "1393937473601368064",
+      "contentHash": "102c5c235bc021e136910ca48b6782fc5498846a3ea78e3e17ec596e5effc642",
+      "title": "明确目标：运用「四大原则」目标更有影响力！",
+      "authorName": "王明伟",
+      "url": "https://api.zhihu.com/km-indep-home/hackathon/v2/knowledge/1393937473601368064",
+      "blocks": [
+        {
+          "id": "1393937473601368064-block-000",
+          "text": "在影响很多人或部门一起来完成一件事时，制定一个有价值、有意义的目标是必需的，因为大家会认同其中的价值和意义而积极行动起来！\n在发挥影响力推动很多人或部门共同完成一项任务之前，我们首先要对目标足够重视，利用以下的四个原则来下足功夫制定目标：\n原则 1：要聚焦，设定一个共同目标。\n脑科学方面的研究有力地证明了这一点。厄尔·米勒是麻省理工学院的脑神经学教授，他的研究显示：人类大脑的并行计算能力很有限，大脑无法同时专注于两件事情，两件事会争夺大脑重要部位的计算能力，这个重要部位就是前额叶皮层。虽然和动物相比，我们的前额叶皮层的计算能力堪称强大，但是它的并行处理能力不足。当两件事情都想获得前额叶皮层的更多关注时，就会导致大脑的计算能力大大下降。\n乔丹·拉格弗曼是美国国家神经失调研究中心的研究员，他在研究中发现：当人们采用多任务并行的工作模式时，大脑的深入思考和创新能力就会大大降低。我们同时处理的事情越多，就越难专注，深入思考和推理的能力就越差。斯坦福大学的心理学家克里夫·纳斯的研究也给拉格弗曼的结论提供了有力的支持，纳斯在多任务处理的实验中发现：大脑的神经回路需要不断对不同的任务进行唤起，才能保持处理多任务的能力。但是，这样会大大削弱人们深入阅读和思考的持续专注能力。\n商业高管教练们多年的实践也为这一点提供了有力的支持。艾伦·范恩是全球知名的高管教练，他的 GROW 模型是目前商业教练领域使用最广泛的教练模型，我有幸成为他的畅销书《潜力量：GROW 教练模型帮你激发潜能》的译者。书中，范恩提出了提升人们表现的核心理念：P=C-I\n表现（Performance）= 能力（Capacity）—干扰（Interference）\n把这个公式翻译一下：提升人们表现的关键在于消除干扰。\n在书中，范恩列举了一个他亲历的案例，他曾经给一个 9 岁的小女孩做网球教练。刚开始的 6 周，范恩教了小女孩很多技术要领，比如：「用手挥动你的球拍」「当球下落时击球」「打球的背面」等。结果小女孩最好的成绩也只是连续 5 次把球成功打过网。范恩发现技术要领太多反而干扰了小女孩的发挥。范恩决定改变方法，他告诉小女孩，不要把注意力放在各种技巧上，只专注做两件事：一是在球触底反弹时，说「弹」；二是当球碰到球拍时，说「打」。就这么简单，其他的不用担心。小女孩按照这种简化方法练习时，第一次就连续 53 次成功击球过网，这让范恩备受鼓舞。后来，范恩把这种消除干扰的理念用在 GROW 教练模型中，帮助很多企业实现了业绩的大幅增长。\n范恩认为消除干扰的关键在于「创造专注」，让人们专注于对他们最重要的目标上，这正是我们倡导的「聚焦于一个共同目标」。\n原则 2：要具体，有明确的量化要求。\n1989 年，随着石油行业的竞争加剧，英国石油公司的高层决定将勘探成本从每桶 5 美元降到每桶 1 美元，实现这一财务指标的关键在于大幅减少枯井的数量。油田勘探员是减少枯井数量的关键群体，在此之前，只要目标勘探地区的出油率不低于 10%，勘探员们就可以自主决定是否在该地区开挖油井。但是公司高层在分析了过去 10 年来所钻油井的数据之后发现：当勘探员评估一口油井的出油率超过 75% 时，几乎弹无虚发；当这一数字为 10% 时，实际成功率却只有 1%，基本上都是在花巨资挖枯井。于是，时任勘探部门主管的伊恩·范恩给油田勘探员们设置了非常具体量化的目标——零枯井！\n这个目标倒逼勘探员们不断提升自己的专业勘探能力：勘探员们利用每一项地质条件的测量结果分别来绘制勘探区域的地图，并用不同的颜色标记，绿色代表可能有油田，褐色代表此处的信息不足，红色代表没有油田。然后，他们再把不同测量指标标注后的地图都重叠起来，只有这个区域的所有指标都是绿色时，才是他们要开挖油井的区域。\n因为有了具体量化的目标，到 2000 年，英国石油公司成功地大幅降低了勘探成本，并且把勘探命中率提升了近 3 倍！\n具体量化的目标还有很多好处：\n1）帮助大家对目标形成清晰统一的认识。如果没有对目标清晰统一的认识，大家就很有可能朝不同的方向使劲儿，这样会导致精力和资源的浪费。\n2）容易进行衡量和考核。量化的目标更加客观，是否实现很容易衡量和考核，有利于督促大家做出实质性的努力，而不是表面文章。\n3）容易进行分解，更易于执行。总目标量化了，才更容易向下分解到各个部门和个人，而且分解之后的子目标也是具体的，大家才更容易有针对性地去执行。\n原则 3：有期限，明确完成的截止时间。\n罗恩·马歇尔是美国第二大图书商博德斯集团（Borders Group）的 CEO，他对于「做事情一定要设定时间期限」的原则有着深刻的认识。很多年前，他想在纽约安家，就请一位房地产经纪人帮忙寻找合适的房子。后来这位房地产经纪人给他推荐了一幢很有升值空间的老房子，马歇尔爽快地买下了这幢房子。在完成了房屋交易之后，房地产经纪人提醒他：「这幢房子需要彻底大修，你得把所有需要修的东西列个清单，而且要在 6 个月之内把一切修完。记住！一定要在 6 个月之内搞定！」\n马歇尔说：「不用担心，我是个很自律的人，可以利用未来 5 年时间慢慢把房子修好。」可是房地产经纪人的回答让他至今难忘：「不，你不会的。因为 6 个月之后，你就会习惯现在的状况。你会觉得一切都挺好，就算客厅里有具尸体，你也会若无其事地跨过去！」结果真的被这位房地产经纪人说中，6 个月内没有修理的东西，在 5 年之后马歇尔卖掉这幢房子的时候仍然没修。\n这件事情给了马歇尔很大的触动，后来他在推动博德斯集团进行变革时，再没有犯过同样的错误。他发现没有时间期限会导致大家行动迟缓，容易让人们形成惰性，迟迟无法实现想要的结果。所以，他的建议是：一定要制定明确的时间期限，然后快速行动。\n明确时间期限还有很多好处：\n1）提高大家的紧迫感。在前文中，我们提到过心理学上的「最后通牒效应」，如果我们没有明确时间期限，大家就没有紧迫感，往往会能拖就拖。\n2）更好地匹配资源。有了时间期限，我们就可以根据时间来更好地配置资源了。如果时间特别紧张，我们可以安排更多的人力物力；如果时间相对充裕，我们可以节省一些资源。所以，时间期限是我们配置资源的重要考量维度。\n3）便于各部门的协作。有了明确的时间期限，我们就可以进行倒推来设置过程中的阶段性时间节点，这样各个部门就可以保持统一步调，更好地协作，完成目标。\n原则 4：有意义，能激发大家积极参与进来。\n根据美国癌症学会的统计数据显示：2006 到 2015 这 10 年间，美国乳腺癌发病率每年都在增加。乳腺癌不仅是美国女性最常见的癌症，占所有新诊断癌症的 30%，而且也是导致美国女性死亡人数第二多的癌症。更让人痛心的是，乳腺癌确诊和治疗难度在各类癌症中都属于难度较低的，很多医生都认为早期乳腺癌是「最容易治愈的癌症」，但是很多患者却因为漫长的诊断流程而错失最佳治疗时机。\n当时美国大部分医院都是科室之间各自为政，让病人以科室制定的诊疗流程为准：\n女性通常会在无意间发现自己的乳房有肿块，然后心情焦急地给医院打电话预约数天后的就诊时间。到了就诊时间，医生需要患者先去放射科做乳房 X 光检查，检查结果要等上几天才能出来，之后再来医院继续问诊，这时医生才真正能做出初步的诊断。如果 X 光片上出现",
+          "blockHash": "102c5c235bc021e136910ca48b6782fc5498846a3ea78e3e17ec596e5effc642"
+        }
+      ],
+      "completeness": "bounded_excerpt",
+      "scope": "hackathon_event",
+      "provenance": "hackathon_event_api",
+      "contentLength": 3000,
+      "eligibleForCompiler": true,
+      "publishingDisclosureRequired": true,
+      "coverage": {
+        "type": "bounded_excerpt",
+        "startOffset": 0,
+        "endOffset": 3000,
+        "providerLimit": 3000,
+        "disclosure": "基于知乎赛事官方接口提供的前 3000 字符生成，不代表整篇文章。"
+      }
+    },
+    "role": "supporting"
+  },
+  {
+    "run": {
+      "schemaVersion": "1.3",
+      "title": "职场：如何让老板给我升职加薪？",
+      "description": "带入一场真实加薪谈话，把客观标准、事实证据与谈话收口编排成准备卡。",
+      "capability": "mission",
+      "category": "加薪谈判模拟",
+      "estimatedMinutes": 2,
+      "sourceRef": {
+        "sourceId": "1307332455322529792",
+        "contentHash": "6f706c6e5934edff8b5537397e9022e6e1779966deac75509fca2137173292f9"
+      },
+      "components": [
+        {
+          "id": "talking_fact",
+          "type": "input",
+          "required": true,
+          "title": "写下一个标准，以及能对应它的事实",
+          "description": "例如“达到独立负责客户项目”＋“本季度独立交付 3 个项目”。只写可确认的标准和事实，不写自我评价。",
+          "source": {
+            "blockId": "1307332455322529792-block-000",
+            "quote": "那我们应该怎么做呢？我们反过来，应该先问出在老板心目中他那一套加薪的客观标准，到底是什么。",
+            "startOffset": 2341,
+            "endOffset": 2386,
+            "blockHash": "6f706c6e5934edff8b5537397e9022e6e1779966deac75509fca2137173292f9"
+          },
+          "nextId": "alignment",
+          "speaker": "你准备说",
+          "utterance": "我想确认标准，并用一项事实说明我现在的位置。"
+        },
+        {
+          "id": "alignment",
+          "type": "choice",
+          "required": true,
+          "title": "对照标准后，这项证据处于哪种状态？",
+          "description": "不同答案会进入不同的谈话收口。",
+          "source": {
+            "blockId": "1307332455322529792-block-000",
+            "quote": "那我们应该怎么做呢？我们反过来，应该先问出在老板心目中他那一套加薪的客观标准，到底是什么。",
+            "startOffset": 2341,
+            "endOffset": 2386,
+            "blockHash": "6f706c6e5934edff8b5537397e9022e6e1779966deac75509fca2137173292f9"
+          },
+          "options": [
+            {
+              "id": "aligned",
+              "label": "能够直接证明我已达标",
+              "response": "进入“带证据继续谈”的收口。",
+              "nextId": "ready_close"
+            },
+            {
+              "id": "gap",
+              "label": "只能证明部分达标",
+              "response": "进入“补证或条件交换”的收口。",
+              "nextId": "gap_close"
+            }
+          ],
+          "speaker": "对照标准",
+          "utterance": "不要凭感觉，先看证据与标准的对应关系。"
+        },
+        {
+          "id": "ready_close",
+          "type": "choice",
+          "required": true,
+          "title": "证据已对齐，这次谈话怎样收口？",
+          "description": "选择一个你准备带进真实谈话的动作。",
+          "source": {
+            "blockId": "1307332455322529792-block-000",
+            "quote": "我们要按照老板所说的标准，举出实际的证据或例子来证明，我们其实已经达标了，但说实话，有时你会发现啊，我们没有完全达标， 那这时我们要做的就是要进行条件交换谈判。",
+            "startOffset": 2860,
+            "endOffset": 2940,
+            "blockHash": "6f706c6e5934edff8b5537397e9022e6e1779966deac75509fca2137173292f9"
+          },
+          "options": [
+            {
+              "id": "present",
+              "label": "按标准逐条呈现证据",
+              "response": "谈话卡会生成“标准—证据”对应路径。",
+              "nextId": "result"
+            },
+            {
+              "id": "confirm",
+              "label": "先确认评估节点与决定时间",
+              "response": "谈话卡会保留下一次确认节点。",
+              "nextId": "result"
+            }
+          ],
+          "speaker": "谈话收口",
+          "utterance": "让谈话落在证据或明确时间节点上。"
+        },
+        {
+          "id": "gap_close",
+          "type": "choice",
+          "required": true,
+          "title": "只有部分达标，这次谈话怎样推进？",
+          "description": "原文给出的不是硬撑，而是补证或讨论条件交换。",
+          "source": {
+            "blockId": "1307332455322529792-block-000",
+            "quote": "我们要按照老板所说的标准，举出实际的证据或例子来证明，我们其实已经达标了，但说实话，有时你会发现啊，我们没有完全达标， 那这时我们要做的就是要进行条件交换谈判。",
+            "startOffset": 2860,
+            "endOffset": 2940,
+            "blockHash": "6f706c6e5934edff8b5537397e9022e6e1779966deac75509fca2137173292f9"
+          },
+          "options": [
+            {
+              "id": "prepare",
+              "label": "先补齐最关键的一项证据",
+              "response": "谈话卡会标出证据缺口。",
+              "nextId": "result"
+            },
+            {
+              "id": "exchange",
+              "label": "讨论超额项与缺口的条件交换",
+              "response": "谈话卡会进入条件交换路径。",
+              "nextId": "result"
+            }
+          ],
+          "speaker": "谈话收口",
+          "utterance": "承认缺口，再选择补证或条件交换。"
+        },
+        {
+          "id": "result",
+          "type": "result",
+          "title": "加薪谈话准备卡",
+          "description": "保留标准、对应证据和这次谈话的收口方式。"
+        }
+      ],
+      "program": {
+        "model": "dialogue_rehearsal",
+        "primitives": [
+          "observable_state",
+          "source_backed_branch",
+          "material_artifact"
+        ],
+        "initialState": "start",
+        "terminalState": "complete",
+        "states": [
+          {
+            "id": "start",
+            "label": "正在准备标准和事实",
+            "description": "先把谈话从主观评价转到客观标准与证据。"
+          },
+          {
+            "id": "alignment_review",
+            "label": "正在对照标准与证据",
+            "description": "判断是已对齐还是仍有缺口。"
+          },
+          {
+            "id": "ready_close",
+            "label": "证据已对齐",
+            "description": "选择带证据谈或确认决定节点。"
+          },
+          {
+            "id": "gap_close",
+            "label": "证据存在缺口",
+            "description": "选择补证或条件交换。"
+          },
+          {
+            "id": "complete",
+            "label": "谈话准备卡已形成",
+            "description": "标准、证据和收口动作已放在同一条路径上。"
+          }
+        ],
+        "variables": [
+          {
+            "id": "alignment",
+            "label": "证据对应",
+            "initialValue": 0,
+            "min": 0,
+            "max": 2,
+            "valueLabels": {
+              "0": "尚未对照",
+              "1": "部分达标",
+              "2": "已经达标"
+            }
+          },
+          {
+            "id": "outcome",
+            "label": "谈话收口",
+            "initialValue": 0,
+            "min": 0,
+            "max": 4,
+            "valueLabels": {
+              "0": "尚未选择",
+              "1": "逐条呈现证据",
+              "2": "确认决定时间",
+              "3": "先补关键证据",
+              "4": "讨论条件交换"
+            }
+          }
+        ],
+        "transitions": [
+          {
+            "from": "start",
+            "componentId": "talking_fact",
+            "when": "completed",
+            "to": "alignment_review"
+          },
+          {
+            "from": "alignment_review",
+            "componentId": "alignment",
+            "when": "choice:aligned",
+            "to": "ready_close",
+            "effects": [
+              {
+                "variableId": "alignment",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "from": "alignment_review",
+            "componentId": "alignment",
+            "when": "choice:gap",
+            "to": "gap_close",
+            "effects": [
+              {
+                "variableId": "alignment",
+                "delta": 1
+              }
+            ]
+          },
+          {
+            "from": "ready_close",
+            "componentId": "ready_close",
+            "when": "choice:present",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "outcome",
+                "delta": 1
+              }
+            ]
+          },
+          {
+            "from": "ready_close",
+            "componentId": "ready_close",
+            "when": "choice:confirm",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "outcome",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "from": "gap_close",
+            "componentId": "gap_close",
+            "when": "choice:prepare",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "outcome",
+                "delta": 3
+              }
+            ]
+          },
+          {
+            "from": "gap_close",
+            "componentId": "gap_close",
+            "when": "choice:exchange",
+            "to": "complete",
+            "effects": [
+              {
+                "variableId": "outcome",
+                "delta": 4
+              }
+            ]
+          }
+        ]
+      },
+      "completion": {
+        "type": "all_required_completed"
+      },
+      "resultArtifact": {
+        "type": "mission_snapshot",
+        "fields": [
+          "talkingFact",
+          "alignment",
+          "outcome",
+          "path",
+          "sourceEvidence"
+        ]
+      }
+    },
+    "source": {
+      "id": "1307332455322529792",
+      "contentHash": "6f706c6e5934edff8b5537397e9022e6e1779966deac75509fca2137173292f9",
+      "title": "职场：如何让老板给我升职加薪？",
+      "authorName": "潘幸知",
+      "url": "https://api.zhihu.com/km-indep-home/hackathon/v2/knowledge/1307332455322529792",
+      "blocks": [
+        {
+          "id": "1307332455322529792-block-000",
+          "text": "大家好，今天我们来聊一个大家都非常关心和感兴趣的话题，在职场中，我们总会遇到一个问题。\n当别人涨了工资欢天喜地的时候，自己憋着一肚子委屈，为什么别人工资都涨了，就我没涨？难道是我能力不够？难道是因为我上个项目没做好？难道是那次我背后说老板坏话被他听到了？难道是我上次说想跳槽的事儿被他知道了？可是我只是说说而已啊！\n那么这节课呢，我们就来聊一聊。关于职场加薪的那点事儿！\n看到这篇内容的时候，我就特别想问大家，你们有跟老板提过升职加薪的事儿吗？\n之前，我在做培训师的时候，讲过跟老板提升职加薪的课程，在现场问大家这个问题，结果，举手的只有 10%。\n也就是说，剩下的 90%，从来没跟老板提过，没有跟老板去探讨过我要升职加薪。而是一直默默地等待着老板主动给他们升职加薪。\n大家这时候想象一下，如果你是一个老板，你的一个员工，人勤勤恳恳，不声不响的，工作做得也比较到位，不过别人都提涨工资了，他也没说。\n你会不会一阵窃喜，紧紧捂住自己的口袋感叹到：真是个懂事儿的好员工啊！要是全公司都能像他这样，活儿多，事儿少就好了！\n或者，老板对你具体的工作并不了解，你也没怎么汇报过工作，老板想着：别人都提，就你没提，是不是你也觉得自己没资格涨薪？\n坦白说，如果你是在一家公司制度比较完善啊， 考核制度也比较健全的公司上班，其实我们是不怎么需要主动开口要求涨工资的。\n但是很不幸，我们大多人其实都是在中小型企业上班。换句话说，如果我们不主动向老板要求涨工资，那涨工资这件事情有时他还真就不会发生，。\n要怎么向老板要求开口呢？\n我先跟你分享一下我自己常见的两大套路：第一套，我是叫做祈求派，也就是通过跟老板不断强调，我这一年来过得有多惨啊，我过的有多辛苦啊，那简单来说就是通过强调自己的惨况向老板求打赏。\n第二类：我叫做威胁派，也就是摆出那种，哎呀，我现在超级不爽了啊，我觉得我自己常常被亏待，我的薪资低于普遍水平太多，我觉得你现在不给我加工资，我似乎就要考虑离职了。\n坦白说，上面这两种套路，我都觉得不怎么可取。\n你用祈求的方法，你即使是再把加薪这件事情变成是老板对你的同情和打赏，这除了会让你变得很憋屈之外，更重要的是，你求加薪，你是在赌你老板的人品和心情，在那一刻有过好而威胁呢，风险太大了吗？\n你想想看，我们已经隐隐然摆出那种不加薪，我就离职的姿态，那万一老板当时就是死活不给你家，你怎么下台？\n你这个方法你其实是在赌你老板，咱们这两个方法，都是把谈判的基础都寄托在对方的人品和人格上了。这在谈判里头，我们认为是最吃亏的谈判处境，而因为你要知道，这一场谈判中最怕的是你把最终决定权完全交托给对方。\n而上面说的这两个办法，恰好就是把自己和老板的谈判群体态势变得太过一面倒，那我们要怎么谈呢？\n今天要和你分享一套方法。我们在加薪谈判时，我们希望能够增加自己对老板的牵制力，同时也要让我们在不卑不亢的情况下加强成功的几率。怎么进行呢？\n我们同样把这方法整理成 4 个步骤。第一，明确自己在职场中的身份。第二，确认加薪标准。第三，讨论我们的工作表现。第四，带领老板想象未来。\n我们先看第一步：就是要明确自己在这个公司、这个职场环境中的身份。\n我们必须先认清自己所在的位置，才能和老板进行合理的谈判。比如说，我们还是个职场小白，对公司的贡献小、影响力弱，而且市场中可代替人员比较多，但你却狮子大开口，跟老板说工资太低要涨薪，那老板肯定是不会同意。\n你们的谈判也会变得不愉快，最后很可能要以你辞职为收尾。\n那如何更好的明确自己在职场中的身份呢？这就要看你对公司的贡献、影响力和市场稀缺度了。员工大致可以分为四种类别：辅助员工、通用员工、独特员工和明星员工。\n如果你属于对公司贡献比较小，低稀缺的辅助、通用类员工，你就可以从工作时长、工作年限等方面出发，跟老板进行谈判，进而提出涨薪资的要求。\n如果是贡献大、影响力强高稀缺的独特、明星员工，从自己对公司的贡献、和负责项目的业务压力等方面出发，且要充分展现自己的工作成果，跟老板进行协商。\n当然，不管我们属于哪一类员工，不断提升自己，让自己变成不可或缺的人物，提高对公司的重要程度是最主要的。\n那大家认识了自己对公司的意义和价值之后，就要进入第二步也是这套谈判话术里最重要的一步，确认标准。\n确认目标前，要先弄清楚一些注意点。跟老板谈升职加薪时，要注意找准时机，最好能找一个老板心情比较好的时刻，如果谈薪资问题时老板心情不好，无疑就是躺枪口上了，谈的时候要给自己放松压力，要把这次加薪看称一次简单的聊天轻松点沟通就好。\n记得一定要提前预约，比如，您什么时候方便，我想跟您聊聊一些我的情况什么的，切记不要贸然去找老板商谈。谈话时要随性一点，可以开开玩笑，制造一些轻松的气氛，这样即使最后的结果不尽人意，也不会让老板讨厌你或者使你们俩的关系变得尴尬。\n谈话内容要切入公司的战略发展前景和利益，这一点非常重要，这既会让老板觉得员工关心公司的发展，还可以让老板放松警惕，可以多聊聊自己的职业规划，千万不要一上来，就跟老板说，老板，我希望加薪到底行不行。\n为什么呢？因为这时老板很容易就可以找到方法把你给挡回去，比如说方法一拖字诀吗？如果他跟你说：「让我想一想。」\n嘿，你这时能够怎么办，你总不成和老板说，不管你现在必须给我一个答案啊，那这个时候会很不愉快吗？那就算老板不使用拖字诀，他还可以随便挑你一个毛病，就把你给打回去。\n你要知道，每一个员工在工作中，他不会零错误，他也总会有做得不够好的地方，只要老板从其中随便挑出一个出来，他就可以用这个做理由把你给挡回去，如果你开始和他针对这个错误进行辩解，那抱歉，这场谈判很可能会变得极不愉快，到时想成功加薪就会更难。\n那我们应该怎么做呢？我们反过来，应该先问出在老板心目中他那一套加薪的客观标准，到底是什么。\n比如说你可以这样问老板：「我想知道，在我们公司里，到底一个员工，尤其是我这一层级的员工，大概达到什么样的标准或者条件才可能加薪呢？」\n注意，你不是在问我还需要做什么才能够加薪，你是要问在这个公司里家信的客观标准，到底是什么。为什么我们要先问出一个客观的标准呢？\n你要知道，在和老板谈判的时候，我们其实是正处在弱势方，我们基本上没有什么权力和资源和老板进行对等谈判，你问出一个客观标准，就能够让你和老板处在一个相交对等的关系上，那么加薪不加薪就不再是老板要不要赏赐你的问题，而是给我加薪到底是不是合理的， 或者加多少才是合理的问题。这是一个员工在和老板谈判时的一个最有力的姿态，也是最不伤害双方感情的姿态。\n而且你想啊，一旦老板自己口中给你了一套客观标准，那他再接下来是不可能随便找个理由来搪塞你的，只要你确实达标了，那他如果再强行拒绝，就意味着他是在出尔反尔了。这个客观标准，是你和老板在接下来的谈判中一个最重要的谈判据点，那在确认标准之后，我们接下来就要进行第三步：我们要大大方方地和老板讨论到底，我在今年的表现是不是已经达到这个客观标准了？\n我们要按照老板所说的标准，举出实际的证据或例子来证明，我们其实已经达标了，但说实话，有时你会发现啊，我们没有完全达标， 那这时我们要做的就是要进行条件交换谈判。\n比如说我确实没有在 a 项目上达标，但是我在 b 项目中表现超标了。\n那我在 b 的表现可不可以用来补偿我所缺失的那一",
+          "blockHash": "6f706c6e5934edff8b5537397e9022e6e1779966deac75509fca2137173292f9"
+        }
+      ],
+      "completeness": "bounded_excerpt",
+      "scope": "hackathon_event",
+      "provenance": "hackathon_event_api",
+      "contentLength": 3000,
+      "eligibleForCompiler": true,
+      "publishingDisclosureRequired": true,
+      "coverage": {
+        "type": "bounded_excerpt",
+        "startOffset": 0,
+        "endOffset": 3000,
+        "providerLimit": 3000,
+        "disclosure": "基于知乎赛事官方接口提供的前 3000 字符生成，不代表整篇文章。"
+      }
+    },
+    "role": "supporting"
+  }
+]

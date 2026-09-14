@@ -3,6 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { Pool } from "pg";
 import type { PublishedRunBundle } from "@/src/data/catalog";
+import publishedOfficialRuns from "@/src/data/published-official-runs.json";
 import type { CompilationDraft } from "@/src/domain/operator-store";
 import type { SessionSnapshot } from "@/src/domain/types";
 
@@ -21,6 +22,7 @@ const localUsageFile = join(process.cwd(), ".local-data", "run-usage.json");
 const localFavoritesFile = join(process.cwd(), ".local-data", "run-favorites.json");
 const localPublishedFile = join(process.cwd(), ".local-data", "published-runs.json");
 type Usage = { started: number; completed: number };
+const publishedOfficialSeed = publishedOfficialRuns as PublishedRunBundle[];
 
 async function readLocalFavorites(): Promise<Record<string, number>> {
   try {
@@ -102,7 +104,11 @@ export async function listPublishedDocuments(): Promise<PublishedRunBundle[]> {
   const client = pool();
   if (!client) {
     const persisted = await readLocalPublished();
-    if (persisted.length) memory().published = persisted;
+    // A Worker cannot read the local development cache. Keep the reviewed,
+    // officially published catalogue in the release bundle so public visitors
+    // never lose access to the real knowledge cards between deployments.
+    const fallback = persisted.length ? persisted : publishedOfficialSeed;
+    if (fallback.length && !memory().published.length) memory().published = fallback;
     return [...memory().published];
   }
   const result = await client.query<{ role: PublishedRunBundle["role"]; run_json: PublishedRunBundle["run"]; source_json: PublishedRunBundle["source"] }>("SELECT role, run_json, source_json FROM app_run_documents WHERE state = 'published' ORDER BY updated_at DESC");
