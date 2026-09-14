@@ -962,3 +962,9 @@ img, svg, video { max-width: 100%; }
   .program-shell .program-action { padding-left: 16px; padding-right: 16px; }
   .run-stats span { font-size: 10px; }
 }
+
+/* The simulated-run hero used to hide its RUN badge on mobile, leaving an
+   empty orb. Keep the sequence number visible in the compact layout. */
+@media (max-width: 760px) {
+  .demo-run-shell .program-run-orb .demo-hero-mark { display: grid; }
+}

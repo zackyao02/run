@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "projectName": "知乎 Run｜用一下",
+  "projectSlug": "知乎-run-用一下",
+  "oauth": {
+    "enabled": true,
+    "appId": "446",
+    "redirectUri": "https://run-313985-12-1463609598.sh.run.tcloudbase.com/auth/callback",
+    "credentialService": "zhihu-hackathon:知乎-run-用一下",
+    "credentialAccount": "oauth-app-key"
+  },
+  "host": "127.0.0.1",
+  "port": 4173
+}
