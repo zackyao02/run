@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "vinext build",
+    "build:cloudbase": "next build",
     "start": "next start",
     "lint": "next lint",
     "contract-check": "python tools/local_contract_check.py"
