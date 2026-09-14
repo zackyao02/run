@@ -10,7 +10,18 @@ export async function GET(request: Request) {
   const code = url.searchParams.get("authorization_code") ?? url.searchParams.get("code") ?? "";
   const cookieStore = await cookies();
   const stateCookie = cookieStore.get(OAUTH_STATE_COOKIE)?.value;
-  const redirectHome = (status: string) => NextResponse.redirect(new URL(`/?oauth=${status}`, request.url));
+  // CloudBase forwards the callback through the container address (often
+  // 0.0.0.0:80). Always return the browser to the configured public origin
+  // instead of leaking that internal address into the OAuth redirect.
+  const publicOrigin = (() => {
+    try {
+      const configured = getOAuthConfig().redirectUri;
+      return configured ? new URL(assertPublicRedirectUri(configured)).origin : url.origin;
+    } catch {
+      return url.origin;
+    }
+  })();
+  const redirectHome = (status: string) => NextResponse.redirect(new URL(`/?oauth=${status}`, publicOrigin));
   if (!consumePendingState(state, stateCookie)) return redirectHome("state_error");
   if (!code) return redirectHome("code_missing");
 
