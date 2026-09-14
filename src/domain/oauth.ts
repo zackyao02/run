@@ -104,8 +104,9 @@ function readIdentityCookie(value: string | undefined) {
   if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) return undefined;
   try {
     const parsed = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as { profile?: ZhihuUserProfile | null; expiresAt?: number };
-    if (!Number.isFinite(parsed.expiresAt) || parsed.expiresAt <= Date.now()) return undefined;
-    return { accessToken: "", expiresAt: parsed.expiresAt, profile: parsed.profile ?? null } satisfies OAuthSession;
+    const expiresAt = parsed.expiresAt;
+    if (!Number.isFinite(expiresAt) || expiresAt === undefined || expiresAt <= Date.now()) return undefined;
+    return { accessToken: "", expiresAt, profile: parsed.profile ?? null } satisfies OAuthSession;
   } catch { return undefined; }
 }
 
