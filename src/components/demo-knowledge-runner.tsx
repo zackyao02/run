@@ -96,11 +96,11 @@ export function DemoKnowledgeRunner({ article, startWithCompile = false }: { art
 
 function CompileIntro({ article, step }: { article: DemoKnowledge; step: number }) {
   const steps = [
-    { label: "读取整篇文章", detail: `已载入 ${article.blocks.length} 个完整段落` },
-    { label: "定位条件与动作", detail: "可运行规则已经绑定原文依据" },
-    { label: "装载定制程序", detail: "本次填写将改变状态、路径和结果" },
+    { label: "读取知识原文", detail: `载入 ${article.blocks.length} 个文章段落与证据` },
+    { label: "编译规则路径", detail: "绑定条件、动作与分支" },
+    { label: "生成运行程序", detail: "准备状态、输入与结果" },
   ];
-  return <div className="compile-intro" role="status" aria-live="polite"><div className="compile-intro-card"><div className="compile-intro-kicker">整篇知识正在变成可操作程序</div><h2>正在准备这次运行</h2><p>文章已经预编译完成；现在装载这篇文章专属的规则、分支和结果物。</p><div className="compile-flow">{steps.map((item, index) => <div className={index <= step ? "compile-flow-step active" : "compile-flow-step"} key={item.label}><i>{index < step ? "✓" : index + 1}</i><div><strong>{item.label}</strong><small>{item.detail}</small></div></div>)}</div><div className="compile-progress"><i style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div><small className="compile-note">路径运行不依赖现场生成；AI 仅在结果后由你主动调用。</small></div></div>;
+  return <div className="compile-intro" role="status" aria-live="polite"><div className="compile-intro-card"><div className="compile-intro-kicker">知识编译引擎 · 正在装载</div><h2>把文章变成可运行程序</h2><p>从原文段落中提取条件、动作与结果，组装成这篇知识专属的可操作路径。</p><div className="compile-flow">{steps.map((item, index) => <div className={`compile-flow-step compile-flow-step-${index + 1} ${index <= step ? "active" : ""}`} key={item.label}><i>{index < step ? "✓" : index + 1}</i><div><strong>{item.label}</strong><small>{item.detail}</small></div></div>)}</div><div className="compile-progress"><i style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div><small className="compile-note">规则在发布前已确认；本次运行只执行原文已经写明的路径。</small></div></div>;
 }
 
 function RunGuide({ article, stage, answers, step }: { article: DemoKnowledge; stage: Stage; answers: Answers; step: number }) {

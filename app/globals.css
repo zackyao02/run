@@ -732,6 +732,30 @@ h1 { margin: 12px 0 16px; font-size: clamp(36px, 6vw, 68px); line-height: .98; l
 .local-fact-artifact strong { color: #fff; font-size: 16px; line-height: 1.55; }
 @media (max-width: 760px) { .official-run-promise { grid-template-columns: 1fr; }.official-run-promise > i { transform: rotate(90deg); } }
 
+/* Compile intro: make the article-to-program transformation visible at a glance. */
+.compile-flow { position: relative; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 28px 0 24px; }
+.compile-flow::before { content: ""; position: absolute; top: 42px; left: 13%; right: 13%; height: 2px; background: linear-gradient(90deg, rgba(144,118,255,.35), rgba(108,232,205,.65), rgba(144,118,255,.35)); }
+.compile-flow-step { position: relative; z-index: 1; min-height: 126px; display: grid; justify-items: center; align-content: start; gap: 10px; padding: 16px 10px 13px; border-color: rgba(255,255,255,.12); border-radius: 18px; background: rgba(16, 23, 57, .72); text-align: center; }
+.compile-flow-step::after { content: "→"; position: absolute; z-index: 2; top: 32px; right: -18px; color: #83ebd5; font-size: 22px; font-weight: 900; }
+.compile-flow-step:last-child::after { display: none; }
+.compile-flow-step i { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid rgba(171,155,255,.42); border-radius: 14px; color: #cfc7ff; background: linear-gradient(145deg, rgba(127,96,255,.55), rgba(67,52,151,.72)); font-size: 15px; font-style: normal; font-weight: 900; box-shadow: 0 8px 20px rgba(48,32,145,.28); }
+.compile-flow-step-1 i { border-radius: 12px; }
+.compile-flow-step-2 i { border-radius: 50%; color: #a8f6e4; background: linear-gradient(145deg, rgba(49,182,159,.72), rgba(28,106,119,.75)); }
+.compile-flow-step-3 i { transform: rotate(45deg); border-radius: 12px; color: #fff1c7; background: linear-gradient(145deg, rgba(226,164,78,.78), rgba(143,83,68,.8)); }
+.compile-flow-step-3 i::first-letter { display: inline-block; transform: rotate(-45deg); }
+.compile-flow-step strong { font-size: 14px; }
+.compile-flow-step small { color: #aeb5d0; line-height: 1.45; }
+.compile-flow-step.active { border-color: rgba(113,232,207,.55); background: linear-gradient(160deg, rgba(46,138,130,.24), rgba(35,35,87,.8)); box-shadow: 0 12px 28px rgba(44,174,155,.12); transform: translateY(-2px); }
+.compile-flow-step.active i { border-color: rgba(125,238,216,.72); box-shadow: 0 0 0 5px rgba(94,225,199,.1), 0 10px 24px rgba(47,185,163,.3); }
+.compile-flow-step:not(.active) { opacity: .5; }
+@media (max-width: 760px) {
+  .compile-flow { grid-template-columns: 1fr; gap: 10px; }
+  .compile-flow::before { top: 12%; bottom: 12%; left: 35px; right: auto; width: 2px; height: auto; }
+  .compile-flow-step { min-height: 0; grid-template-columns: 48px minmax(0, 1fr); justify-items: start; align-items: center; text-align: left; padding: 12px 14px; }
+  .compile-flow-step::after { content: "↓"; top: auto; right: auto; bottom: -18px; left: 26px; font-size: 19px; }
+  .compile-flow-step-3 i { transform: rotate(45deg); }
+}
+
 /* Result-led demo runtime: show one concrete task and why its result changed. */
 .demo-run-hero { padding-top: 42px; }
 .demo-card-task { position: relative; z-index: 1; margin: 8px 0 0; color: #69657c; font-size: 13px; line-height: 1.55; }
