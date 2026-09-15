@@ -535,6 +535,10 @@ h1 { margin: 12px 0 16px; font-size: clamp(36px, 6vw, 68px); line-height: .98; l
 .home-nav { display: flex; align-items: center; gap: 22px; }
 .home-nav a { color: #565069; font-size: 14px; font-weight: 750; text-decoration: none; }
 .home-nav a:hover { color: var(--brand); }
+.nav-account { display: inline-flex; align-items: center; gap: 8px; min-width: 0; color: #2b2541; font-size: 14px; font-weight: 800; }
+.nav-avatar { width: 30px; height: 30px; display: grid; place-items: center; flex: 0 0 30px; overflow: hidden; border: 1px solid #d9d1ff; border-radius: 50%; color: #fff; background: linear-gradient(135deg, #7854ff, #49cbb1); font-size: 12px; font-weight: 900; }
+.nav-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.nav-account-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .product-container { max-width: 1180px; padding-top: 40px; }
 .product-hero { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(340px, .98fr); align-items: center; min-height: 570px; gap: clamp(32px, 7vw, 90px); }
 .hero-copy h1 { max-width: 780px; font-size: clamp(52px, 7.5vw, 88px); line-height: .94; }
@@ -866,6 +870,9 @@ img, svg, video { max-width: 100%; }
   .home-nav { gap: 11px; flex-wrap: wrap; justify-content: flex-end; }
   .home-nav a { font-size: 12px; }
   .home-nav a:first-child { display: none; }
+  .nav-account { gap: 6px; font-size: 12px; }
+  .nav-avatar { width: 28px; height: 28px; flex-basis: 28px; }
+  .nav-account-name { max-width: 92px; }
 
   .container, .discovery-container, .product-container, .workbench-container {
     width: 100%; max-width: none; padding-left: 18px; padding-right: 18px;

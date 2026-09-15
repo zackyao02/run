@@ -81,9 +81,7 @@ export function DemoKnowledgeRunner({ article, startWithCompile = false }: { art
     {startWithCompile && compileStep < 3 && <CompileIntro article={article} step={compileStep} />}
     <header className="topbar demo-topbar"><Link href="/" className="brand">用<span>一下</span></Link><div className="demo-top-label">赛事模拟知识</div><Link className="source-nav-link" href={`/demo/${article.id}/source`}>阅读模拟原文 ↗</Link></header>
     <div className="container demo-run-container">
-      <section className="demo-run-hero program-run-hero"><div><div className="eyebrow">用一下这篇知识</div><h1>{article.title}</h1><p>{article.promise}</p><div className="demo-meta"><span>赛事模拟知识</span><span>{article.authorName}</span><span>约 {article.estimatedMinutes} 分钟</span></div></div><div className="program-hero-side"><div className="program-run-orb"><div className="demo-hero-mark"><span>RUN</span><strong>{mark}</strong></div></div><DemoUsageStats articleId={article.id} compact /></div></section>
-      <p className="demo-disclosure">这篇完整模拟知识已提前编译；你的填写和选择会改变确定性状态与结果。完成后可选用 AI 帮你把结果整理得更贴近当前场景。</p>
-      <RunGuide article={article} stage={stage} answers={answers} step={step} />
+      <section className="demo-run-hero program-run-hero"><div><div className="eyebrow">用一下这篇知识</div><h1>{article.title}</h1><p>{article.promise}</p></div><div className="program-hero-side"><div className="program-run-orb"><div className="demo-hero-mark"><span>RUN</span><strong>{mark}</strong></div></div><DemoUsageStats articleId={article.id} compact /></div></section>
       {stage === "form" && <StepRail article={article} step={step} />}
       {article.kind === "rental" && <RentalRun article={article} answers={answers} setAnswer={setAnswer} stage={stage} setStage={setStage} step={step} setStep={setStep} />}
       {article.kind === "meeting" && <MeetingRun article={article} answers={answers} setAnswer={setAnswer} stage={stage} setStage={setStage} step={step} setStep={setStep} />}
@@ -101,18 +99,6 @@ function CompileIntro({ article, step }: { article: DemoKnowledge; step: number 
     { label: "生成运行程序", detail: "准备状态、输入与结果" },
   ];
   return <div className="compile-intro" role="status" aria-live="polite"><div className="compile-intro-card"><div className="compile-intro-kicker">知识编译引擎 · 正在装载</div><h2>把文章变成可运行程序</h2><p>从原文段落中提取条件、动作与结果，组装成这篇知识专属的可操作路径。</p><div className="compile-flow">{steps.map((item, index) => <div className={`compile-flow-step compile-flow-step-${index + 1} ${index <= step ? "active" : ""}`} key={item.label}><i>{index < step ? "✓" : index + 1}</i><div><strong>{item.label}</strong><small>{item.detail}</small></div></div>)}</div><div className="compile-progress"><i style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div><small className="compile-note">规则在发布前已确认；本次运行只执行原文已经写明的路径。</small></div></div>;
-}
-
-function RunGuide({ article, stage, answers, step }: { article: DemoKnowledge; stage: Stage; answers: Answers; step: number }) {
-  const guide = article.kind === "rental"
-    ? { take: "一张入住成本与风险核验卡", now: "填入房租、通勤上限和这次绝不能忽略的条件。" }
-    : article.kind === "meeting"
-      ? { take: "一张会议卡点诊断路径", now: "带入最近一次会议，选择它最先卡住的节点。" }
-      : article.kind === "feedback"
-        ? { take: "一段可直接使用的反馈追问稿", now: "带入原话、修改对象和本轮交付边界。" }
-        : { take: "一张可逆性决策边界图", now: "写下两个真实方案，只验证最会改变选择的一条信息。" };
-  const state = stage === "result" ? "结果已生成" : Object.keys(answers).length ? `正在运行你的情况 · 第 ${step + 1} 步` : "从真实情况开始";
-  return <section className="run-guide"><div><span>这次你会拿走</span><strong>{guide.take}</strong></div><div><span>现在要做</span><p>{guide.now}</p></div><b>{state}</b></section>;
 }
 
 function StepRail({ article, step }: { article: DemoKnowledge; step: number }) {
