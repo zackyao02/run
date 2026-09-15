@@ -7,6 +7,7 @@ import type { DemoKnowledge } from "@/src/data/demo-knowledge";
 import { incrementDemoUsage } from "@/src/lib/demo-usage";
 import { DemoUsageStats } from "@/src/components/demo-usage-stats";
 import { AiResultInterpretation } from "@/src/components/ai-result-interpretation";
+import { CompileLoadingVisual } from "@/src/components/compile-loading-visual";
 import { buildDemoResultContext } from "@/src/domain/demo-result-context";
 
 type Answers = Record<string, string>;
@@ -47,9 +48,9 @@ export function DemoKnowledgeRunner({ article, startWithCompile = false }: { art
   useEffect(() => {
     if (!startWithCompile) return;
     setCompileStep(0);
-    const first = window.setTimeout(() => setCompileStep(1), 300);
-    const second = window.setTimeout(() => setCompileStep(2), 650);
-    const done = window.setTimeout(() => { setCompileStep(3); router.replace(`/demo/${article.id}`, { scroll: false }); }, 1050);
+    const first = window.setTimeout(() => setCompileStep(1), 520);
+    const second = window.setTimeout(() => setCompileStep(2), 1050);
+    const done = window.setTimeout(() => { setCompileStep(3); router.replace(`/demo/${article.id}`, { scroll: false }); }, 1700);
     return () => { window.clearTimeout(first); window.clearTimeout(second); window.clearTimeout(done); };
   }, [article.id, router, startWithCompile]);
 
@@ -98,7 +99,7 @@ function CompileIntro({ article, step }: { article: DemoKnowledge; step: number 
     { label: "编译规则路径", detail: "绑定条件、动作与分支" },
     { label: "生成运行程序", detail: "准备状态、输入与结果" },
   ];
-  return <div className="compile-intro" role="status" aria-live="polite"><div className="compile-intro-card"><div className="compile-intro-kicker">知识编译引擎 · 正在装载</div><h2>把文章变成可运行程序</h2><p>从原文段落中提取条件、动作与结果，组装成这篇知识专属的可操作路径。</p><div className="compile-flow">{steps.map((item, index) => <div className={`compile-flow-step compile-flow-step-${index + 1} ${index <= step ? "active" : ""}`} key={item.label}><i>{index < step ? "✓" : index + 1}</i><div><strong>{item.label}</strong><small>{item.detail}</small></div></div>)}</div><div className="compile-progress"><i style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div><small className="compile-note">规则在发布前已确认；本次运行只执行原文已经写明的路径。</small></div></div>;
+  return <div className="compile-intro" role="status" aria-live="polite"><div className="compile-intro-card"><div className="compile-intro-kicker">知识编译引擎 · 正在装载</div><h2>把文章变成可运行程序</h2><p>从原文段落中提取条件、动作与结果，组装成这篇知识专属的可操作路径。</p><CompileLoadingVisual step={step} /><div className="compile-flow">{steps.map((item, index) => <div className={`compile-flow-step compile-flow-step-${index + 1} ${index <= step ? "active" : ""}`} key={item.label}><i>{index < step ? "✓" : index + 1}</i><div><strong>{item.label}</strong><small>{item.detail}</small></div></div>)}</div><div className="compile-progress"><i style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div><small className="compile-note">规则在发布前已确认；本次运行只执行原文已经写明的路径。</small></div></div>;
 }
 
 function StepRail({ article, step }: { article: DemoKnowledge; step: number }) {
