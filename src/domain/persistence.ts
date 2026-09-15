@@ -187,6 +187,21 @@ export async function getSessionDocument(id: string): Promise<SessionSnapshot | 
   return result.rows[0]?.snapshot;
 }
 
+/** Lists only the current account's opaque session snapshots. */
+export async function listSessionDocumentsForAccount(accountKey: string, limit = 24): Promise<SessionSnapshot[]> {
+  const client = pool();
+  const cappedLimit = Math.max(1, Math.min(limit, 50));
+  if (!client) return [...memory().sessions.values()]
+    .filter((session) => session.accountKey === accountKey)
+    .sort((a, b) => (b.result?.completedAt ?? "").localeCompare(a.result?.completedAt ?? ""))
+    .slice(0, cappedLimit);
+  const result = await client.query<{ snapshot: SessionSnapshot }>(
+    "SELECT snapshot FROM app_session_documents WHERE snapshot ->> 'accountKey' = $1 ORDER BY updated_at DESC LIMIT $2",
+    [accountKey, cappedLimit],
+  );
+  return result.rows.map((row) => row.snapshot);
+}
+
 export async function getUsageDocument(runId: string): Promise<Usage> {
   const client = pool();
   if (!client) {

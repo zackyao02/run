@@ -12,14 +12,31 @@ function hrefFor(runId: string) { return runId.startsWith("fixture_") ? `/play/$
 export function LocalHistory() {
   const [items, setItems] = useState<LocalSession[]>([]);
   const [demoItems, setDemoItems] = useState<DemoSession[]>([]);
+  const [accountHistory, setAccountHistory] = useState({ authenticated: false, persistent: false });
   useEffect(() => {
     const ids = Object.keys(window.localStorage).filter((key) => key.startsWith("zhihu-run-session:")).map((key) => window.localStorage.getItem(key)).filter((id): id is string => Boolean(id));
-    Promise.all(ids.map(async (id) => {
+    const savedOnDevice = Promise.all(ids.map(async (id) => {
       const session = await fetch(`/api/v1/sessions/${id}`).then((response) => response.ok ? response.json() : null);
       if (!session) return null;
-      const run = await fetch(`/api/v1/runs/${session.runId}`).then((response) => response.ok ? response.json() : null).catch(() => null);
-      return { ...session, title: run?.title } as LocalSession;
-    })).then((sessions) => setItems(sessions.filter((item): item is LocalSession => Boolean(item)))).catch(() => undefined);
+      return session as LocalSession;
+    })).then((sessions) => sessions.filter((item): item is LocalSession => Boolean(item)));
+    const savedForAccount = fetch("/api/v1/sessions", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => {
+        if (!data) return [] as LocalSession[];
+        setAccountHistory({ authenticated: Boolean(data.authenticated), persistent: Boolean(data.persistent) });
+        return Array.isArray(data.items) ? data.items as LocalSession[] : [];
+      })
+      .catch(() => [] as LocalSession[]);
+    Promise.all([savedOnDevice, savedForAccount]).then(async ([deviceItems, accountItems]) => {
+      const unique = new Map<string, LocalSession>();
+      [...accountItems, ...deviceItems].forEach((item) => unique.set(item.id, item));
+      const sessions = await Promise.all([...unique.values()].map(async (session) => {
+        const run = await fetch(`/api/v1/runs/${session.runId}`).then((response) => response.ok ? response.json() : null).catch(() => null);
+        return { ...session, title: run?.title } as LocalSession;
+      }));
+      setItems(sessions);
+    }).catch(() => undefined);
     try {
       const demos = Object.keys(window.localStorage)
         .filter((key) => key.startsWith("zhihu-run-demo:") && !key.startsWith("zhihu-run-demo-usage:"))
@@ -32,7 +49,7 @@ export function LocalHistory() {
       setDemoItems(demos);
     } catch { setDemoItems([]); }
   }, []);
-  if (!items.length && !demoItems.length) return <article className="card"><h2>还没有可继续的运行记录</h2><p>完成或中途离开的 Run 草稿会保留在这个浏览器，刷新后可以继续；运行次数和收藏次数会在服务端统一累计。</p><Link className="primary" href="/">去体验知识程序 →</Link></article>;
+  if (!items.length && !demoItems.length) return <article className="card"><h2>还没有可继续的运行记录</h2><p>{accountHistory.authenticated ? accountHistory.persistent ? "正式 Run 已关联当前知乎账号，换设备登录后也能继续；赛事模拟知识仍保存在当前浏览器。" : "当前知乎账号已连接，但服务器数据库尚未确认；正式 Run 暂以当前浏览器恢复为准。" : "登录知乎后，正式 Run 会关联到当前账号；赛事模拟知识仍保存在当前浏览器。"}</p><Link className="primary" href="/">去体验知识程序 →</Link></article>;
   return <div className="grid">{demoItems.sort((a, b) => (b.savedAt ?? "").localeCompare(a.savedAt ?? "")).map((item) => {
     const article = demoKnowledge.find((candidate) => candidate.id === item.runId);
     if (!article) return null;

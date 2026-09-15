@@ -9,6 +9,7 @@ import { DemoUsageStats } from "@/src/components/demo-usage-stats";
 import { AiResultInterpretation } from "@/src/components/ai-result-interpretation";
 import { CompileLoadingVisual } from "@/src/components/compile-loading-visual";
 import { buildDemoResultContext } from "@/src/domain/demo-result-context";
+import { ZhihuNavStatus } from "@/src/components/zhihu-nav-status";
 
 type Answers = Record<string, string>;
 type Stage = "form" | "result";
@@ -80,7 +81,7 @@ export function DemoKnowledgeRunner({ article, startWithCompile = false }: { art
   const mark = "";
   return <main className={`shell demo-run-shell accent-${article.accent}`}>
     {startWithCompile && compileStep < 3 && <CompileIntro article={article} step={compileStep} />}
-    <header className="topbar demo-topbar"><Link href="/" className="brand">用<span>一下</span></Link><div className="demo-top-label">赛事模拟知识</div><Link className="source-nav-link" href={`/demo/${article.id}/source`}>阅读模拟原文 ↗</Link></header>
+    <header className="topbar demo-topbar"><Link href="/" className="brand">用<span>一下</span></Link><div className="demo-top-label">赛事模拟知识</div><div className="demo-top-actions"><ZhihuNavStatus /><Link className="source-nav-link" href={`/demo/${article.id}/source`}>阅读模拟原文 ↗</Link></div></header>
     <div className="container demo-run-container">
       <section className="demo-run-hero program-run-hero"><div><div className="eyebrow">用一下这篇知识</div><h1>{article.title}</h1><p>{article.promise}</p></div><div className="program-hero-side"><div className="program-run-orb"><div className="demo-hero-mark"><span>RUN</span><strong>{mark}</strong></div></div><DemoUsageStats articleId={article.id} compact /></div></section>
       {stage === "form" && <StepRail article={article} step={step} />}
@@ -95,11 +96,11 @@ export function DemoKnowledgeRunner({ article, startWithCompile = false }: { art
 
 function CompileIntro({ article, step }: { article: DemoKnowledge; step: number }) {
   const steps = [
-    { label: "读取知识原文", detail: `载入 ${article.blocks.length} 个文章段落与证据` },
-    { label: "编译规则路径", detail: "绑定条件、动作与分支" },
-    { label: "生成运行程序", detail: "准备状态、输入与结果" },
+    { label: "校验知识来源", detail: `确认 ${article.blocks.length} 个文章段落与证据` },
+    { label: "装载规则路径", detail: "恢复已确认的条件、动作与分支" },
+    { label: "启动知识程序", detail: "准备本次输入与结果" },
   ];
-  return <div className="compile-intro" role="status" aria-live="polite"><div className="compile-intro-card"><div className="compile-intro-kicker">知识编译引擎 · 正在装载</div><h2>把文章变成可运行程序</h2><p>从原文段落中提取条件、动作与结果，组装成这篇知识专属的可操作路径。</p><CompileLoadingVisual step={step} /><div className="compile-flow">{steps.map((item, index) => <div className={`compile-flow-step compile-flow-step-${index + 1} ${index <= step ? "active" : ""}`} key={item.label}><i>{index < step ? "✓" : index + 1}</i><div><strong>{item.label}</strong><small>{item.detail}</small></div></div>)}</div><div className="compile-progress"><i style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div><small className="compile-note">规则在发布前已确认；本次运行只执行原文已经写明的路径。</small></div></div>;
+  return <div className="compile-intro" role="status" aria-live="polite"><div className="compile-intro-card"><div className="compile-intro-kicker">已编译模拟程序 · 正在装载</div><h2>正在准备这次运行</h2><p>正在校验来源证据，并装载发布前确认的规则路径。</p><CompileLoadingVisual step={step} /><div className="compile-flow">{steps.map((item, index) => <div className={`compile-flow-step compile-flow-step-${index + 1} ${index <= step ? "active" : ""}`} key={item.label}><i>{index < step ? "✓" : index + 1}</i><div><strong>{item.label}</strong><small>{item.detail}</small></div></div>)}</div><div className="compile-progress"><i style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div><small className="compile-note">知识程序已在发布前确认；本次只装载并运行已确认的规则。</small></div></div>;
 }
 
 function StepRail({ article, step }: { article: DemoKnowledge; step: number }) {

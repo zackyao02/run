@@ -7,7 +7,7 @@ servers:
 paths:
   /sessions:
     get:
-      summary: List resumable sessions for the current anonymous device identity
+      summary: List resumable sessions for the current authenticated Zhihu account
       parameters:
         - in: query
           name: status

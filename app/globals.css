@@ -1062,7 +1062,14 @@ img, svg, video { max-width: 100%; }
 .demo-run-shell .program-hero-side { display: none; }
 .program-shell .demo-run-hero,
 .demo-run-shell .demo-run-hero { grid-template-columns: 1fr; }
+.demo-top-actions { display:flex; align-items:center; gap:14px; margin-left:14px; min-width:0; }
+.demo-top-actions .source-nav-link { margin-left:0; white-space:nowrap; }
+.demo-topbar .nav-account { color:#eeeaff; }
+.demo-topbar .nav-login { color:#c6b9ff; font-size:13px; font-weight:850; text-decoration:none; white-space:nowrap; }
 @media (max-width:760px) {
   .program-shell .program-run-hero,
   .demo-run-shell .program-run-hero { grid-template-columns: 1fr; gap: 14px; padding-top: 27px; }
+  .demo-top-actions { width:100%; justify-content:space-between; margin:0; }
+  .demo-top-actions .nav-account-name { max-width:92px; }
+  .demo-top-actions .source-nav-link { margin-left:auto; }
 }

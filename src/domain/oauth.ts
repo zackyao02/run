@@ -64,9 +64,44 @@ export function createPendingState(returnTo = "/") {
   return state;
 }
 
+/**
+ * A signed short-lived state cookie lets the callback survive a CloudBase
+ * container switch. Only the random state and an internal return path are
+ * stored; no Zhihu credential is included.
+ */
+export function createPendingStateCookieValue(state: string, returnTo = "/") {
+  const secret = identitySecret();
+  if (!secret) return undefined;
+  const payload = Buffer.from(JSON.stringify({ state, createdAt: Date.now(), returnTo: normalizeReturnTo(returnTo) }), "utf8").toString("base64url");
+  const signature = createHmac("sha256", secret).update(payload).digest("base64url");
+  return `${payload}.${signature}`;
+}
+
+function readPendingStateCookie(value: string | undefined) {
+  const secret = identitySecret();
+  if (!secret || !value) return undefined;
+  const [payload, encodedSignature] = value.split(".");
+  if (!payload || !encodedSignature) return undefined;
+  const expected = createHmac("sha256", secret).update(payload).digest();
+  const actual = Buffer.from(encodedSignature, "base64url");
+  if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) return undefined;
+  try {
+    const parsed = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as { state?: string; createdAt?: number; returnTo?: string };
+    if (!parsed.state || !Number.isFinite(parsed.createdAt) || parsed.createdAt === undefined || Date.now() - parsed.createdAt > STATE_TTL_MS) return undefined;
+    return { state: parsed.state, createdAt: parsed.createdAt, returnTo: normalizeReturnTo(parsed.returnTo) };
+  } catch { return undefined; }
+}
+
 export function consumePendingState(state: string, expectedCookie: string | undefined) {
   prune();
   if (!state || !expectedCookie) return undefined;
+  const signed = readPendingStateCookie(expectedCookie);
+  if (signed) {
+    const a = Buffer.from(state);
+    const b = Buffer.from(signed.state);
+    if (a.length === b.length && timingSafeEqual(a, b)) return { createdAt: signed.createdAt, returnTo: signed.returnTo };
+    return undefined;
+  }
   const a = Buffer.from(state);
   const b = Buffer.from(expectedCookie);
   if (a.length !== b.length || !timingSafeEqual(a, b)) return undefined;
@@ -114,6 +149,17 @@ export function getSession(id: string | undefined, identityCookie?: string) {
   if (!id) return readIdentityCookie(identityCookie);
   prune();
   return sessions.get(id) ?? readIdentityCookie(identityCookie);
+}
+
+/**
+ * Store only a stable pseudonym with a Run session.  The Zhihu subject itself,
+ * access token and profile remain outside runtime progress documents.
+ */
+export function accountKeyForProfile(profile: ZhihuUserProfile | null | undefined) {
+  const subject = profile?.id ?? profile?.urlToken;
+  const secret = identitySecret();
+  if (!subject || !secret) return undefined;
+  return `zh_${createHmac("sha256", secret).update(`account:${subject}`).digest("base64url")}`;
 }
 
 export function deleteSession(id: string | undefined) {

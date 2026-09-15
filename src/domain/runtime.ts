@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { getPublishedRuns } from "@/src/data/catalog";
-import { getSessionDocument, getUsageDocument, incrementUsageDocument, saveSessionDocument } from "@/src/domain/persistence";
+import { getSessionDocument, getUsageDocument, incrementUsageDocument, listSessionDocumentsForAccount, saveSessionDocument } from "@/src/domain/persistence";
 import type { ExecutableRun, ProgramState, ProgressValue, ResultArtifact, RunComponent, SessionSnapshot } from "@/src/domain/types";
 
 const actionableTypes = new Set(["check", "task", "choice", "input", "timer"]);
@@ -13,10 +13,11 @@ async function getRunForSession(session: SessionSnapshot): Promise<ExecutableRun
   return session.runSnapshot ?? getRun(session.runId);
 }
 
-export async function createSession(runId: string, runSnapshot?: ExecutableRun): Promise<SessionSnapshot> {
+export async function createSession(runId: string, runSnapshot?: ExecutableRun, accountKey?: string): Promise<SessionSnapshot> {
   if (!runSnapshot && !await getRun(runId)) throw new Error("RUN_NOT_FOUND");
   const session: SessionSnapshot = {
     id: randomUUID(), runId, status: "created", progress: {}, started: false,
+    ...(accountKey ? { accountKey } : {}),
     ...(runSnapshot ? { runSnapshot } : {}),
   };
   await saveSessionDocument(session);
@@ -36,6 +37,12 @@ export async function createFixtureSession(run: ExecutableRun): Promise<SessionS
 }
 
 export async function getSession(sessionId: string): Promise<SessionSnapshot | undefined> { return getSessionDocument(sessionId); }
+export async function getSessionForAccount(sessionId: string, accountKey?: string): Promise<SessionSnapshot | undefined> {
+  const session = await getSessionDocument(sessionId);
+  if (!session || (session.accountKey && session.accountKey !== accountKey)) return undefined;
+  return session;
+}
+export async function listSessionsForAccount(accountKey: string) { return listSessionDocumentsForAccount(accountKey); }
 export async function getRunUsage(runId: string) { return getUsageDocument(runId); }
 
 function isChoiceValue(value: ProgressValue): value is `choice:${string}` { return value.startsWith("choice:"); }
@@ -50,9 +57,10 @@ function assertValueIsValid(component: RunComponent, value: ProgressValue) {
   if (["task", "input", "timer"].includes(component.type) && !["matched", "not_matched", "needs_review", "unchecked"].includes(value)) throw new Error("INVALID_ACTION_VALUE");
 }
 
-export async function updateProgress(sessionId: string, componentId: string, value: ProgressValue): Promise<SessionSnapshot> {
+export async function updateProgress(sessionId: string, componentId: string, value: ProgressValue, accountKey?: string): Promise<SessionSnapshot> {
   const session = await getSessionDocument(sessionId);
   if (!session) throw new Error("SESSION_NOT_FOUND");
+  if (session.accountKey && session.accountKey !== accountKey) throw new Error("SESSION_NOT_FOUND");
   const run = await getRunForSession(session);
   if (!run) throw new Error("RUN_NOT_FOUND");
   const component = run.components.find((item) => item.id === componentId);
@@ -169,9 +177,10 @@ function buildResult(session: SessionSnapshot, run: ExecutableRun): ResultArtifa
   };
 }
 
-export async function completeSession(sessionId: string): Promise<SessionSnapshot> {
+export async function completeSession(sessionId: string, accountKey?: string): Promise<SessionSnapshot> {
   const session = await getSessionDocument(sessionId);
   if (!session) throw new Error("SESSION_NOT_FOUND");
+  if (session.accountKey && session.accountKey !== accountKey) throw new Error("SESSION_NOT_FOUND");
   const run = await getRunForSession(session);
   if (!run) throw new Error("RUN_NOT_FOUND");
   if (session.result) return session;

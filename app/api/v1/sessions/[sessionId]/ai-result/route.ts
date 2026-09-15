@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getPublishedRunBundle } from "@/src/data/catalog";
-import { getSession } from "@/src/domain/runtime";
+import { getCurrentAccount } from "@/src/domain/current-account";
+import { getSessionForAccount } from "@/src/domain/runtime";
 import { reserveRateSlot } from "@/src/domain/persistence";
 import { askRuntimeResultAi, RuntimeAiError } from "@/src/domain/runtime-ai";
 
@@ -21,7 +22,8 @@ const system = `你是“用一下”的可选 AI 结果整理助手。用户已
 
 export async function POST(request: Request, context: { params: Promise<{ sessionId: string }> }) {
   const { sessionId } = await context.params;
-  const session = await getSession(sessionId);
+  const account = await getCurrentAccount();
+  const session = await getSessionForAccount(sessionId, account.accountKey);
   if (!session) return NextResponse.json({ error: "SESSION_NOT_FOUND" }, { status: 404 });
   if (!session.result) return NextResponse.json({ error: "RESULT_NOT_READY" }, { status: 409 });
   const bundle = await getPublishedRunBundle(session.runId);

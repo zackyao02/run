@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { assertPublicRedirectUri, createPendingState, getOAuthConfig, normalizeReturnTo, OAUTH_STATE_COOKIE } from "@/src/domain/oauth";
+import { assertPublicRedirectUri, createPendingState, createPendingStateCookieValue, getOAuthConfig, normalizeReturnTo, OAUTH_STATE_COOKIE } from "@/src/domain/oauth";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     authorize.searchParams.set("response_type", "code");
     authorize.searchParams.set("state", state);
     const response = NextResponse.redirect(authorize);
-    response.cookies.set(OAUTH_STATE_COOKIE, state, { httpOnly: true, secure: true, sameSite: "lax", maxAge: 600, path: "/" });
+    response.cookies.set(OAUTH_STATE_COOKIE, createPendingStateCookieValue(state, returnTo) ?? state, { httpOnly: true, secure: true, sameSite: "lax", maxAge: 600, path: "/" });
     return response;
   } catch (error) {
     const message = error instanceof Error && error.message === "OAUTH_REDIRECT_URI_NOT_CONFIGURED"

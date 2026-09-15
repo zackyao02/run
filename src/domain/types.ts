@@ -181,6 +181,8 @@ export interface ExecutableRun {
 export interface SessionSnapshot {
   id: string;
   runId: string;
+  /** HMAC pseudonym of the authenticated account; never a Zhihu id or token. */
+  accountKey?: string;
   status: "created" | "engaged" | "completed" | "abandoned";
   progress: Record<string, ProgressValue>;
   started: boolean;
